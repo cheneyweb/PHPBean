@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans>
+	<!-- 插件 -->
+	<bean id="permissionPlugin" class="background/module/tmp_permission/plugin/PermissionPlugin.php" />
+	
+	<!-- 框架工具 -->
+	<bean id="pDOUtil" class="background/frame/dao/pdo/PDOUtil.php" />
+	<bean id="myBatis" class="background/frame/mybatis/MyBatis.php" />
+</beans>

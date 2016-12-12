@@ -10,7 +10,7 @@ class AddModuleAction {
 	public $smartyUtil;
 	public $moduleManagerService;
 	public $tableToEntity;
-	
+
 	// 执行体
 	public function execute() {
 		// 入参数据
@@ -21,7 +21,7 @@ class AddModuleAction {
 		$entity = $this->struts->genEntity (); // 新模块对象
 		$tablePrefix = $entity->code; // 新模块前缀
 		$tableName = $entity->name; // 新模块名
-		                            
+
 		// 创建新模块PHP代码
 		self::createPHP ( $path, $exampleModulePrefix, $exampleModuleName, $tablePrefix, $tableName );
 		// 生成HTML文件
@@ -34,7 +34,7 @@ class AddModuleAction {
 		$this->moduleManagerService->save ( $entity );
 		echo 'Y';
 	}
-	
+
 	/**
 	 * 创建新模块PHP代码
 	 *
@@ -67,7 +67,7 @@ class AddModuleAction {
 		self::editModuleFile ( $newMoudlePath . '/service/ExampleService.php', $exampleModulePrefix, $exampleModuleName, $tablePrefix, $tableName );
 		self::editModuleFile ( $newMoudlePath . '/validate/ExampleValidate.php', $exampleModulePrefix, $exampleModuleName, $tablePrefix, $tableName );
 	}
-	
+
 	/**
 	 * 创建新模块HTML代码
 	 *
@@ -98,7 +98,7 @@ class AddModuleAction {
 		recurse_copy ( $newModuleDir, $path . '../../foreground/module/' . $tablePrefix . '_' . $tableName );
 		recurse_delete ( $newModuleDir );
 	}
-	
+
 	/**
 	 * 创建新模块SQL代码
 	 *
@@ -112,13 +112,13 @@ class AddModuleAction {
 	function createSQL($path, $exampleModulePrefix, $exampleModuleName, $tablePrefix, $tableName) {
 		// 获取表所有字段名,修改实体和SQL文件
 		$fields = $this->tableToEntity->getFieldNames ( $tablePrefix . '_' . $tableName );
-		
+
 		$newModuleDir = $path . $tablePrefix . '_' . $tableName;
-		
+
 		self::editEntityFile ( $newModuleDir . '/entity/' . formatJavaStyle ( $tableName, false ) . '.php', $fields );
 		self::editSQLFile ( $newModuleDir . '/dao/' . formatJavaStyle ( $tableName, false ) . 'DAO_SQL.xml', $fields, $exampleModuleName, $tablePrefix . '_', $tableName );
 	}
-	
+
 	/**
 	 * 编辑模块文件
 	 *
@@ -139,12 +139,12 @@ class AddModuleAction {
 		$exampleName2 = '_' . $exampleModuleName; 				// 驼峰法，首字母小写[_example]
 		$exampleName3 = '_' . ucfirst ( $exampleModuleName ); 	// 驼峰法，首字母大写[_Example]
 		$exampleName4 = '__noprefix' . $exampleModuleName;		// 全小写，下划线间隔(无前缀)[__noprefixexample]
-		
+
 		$moduleName1 = $tablePrefix . '_' .$tableName; 			// 全小写，下划线间隔
 		$moduleName2 = formatJavaStyle ( $tableName, false ); 	// 驼峰法，首字母小写
 		$moduleName3 = formatJavaStyle ( $tableName, true ); 	// 驼峰法，首字母大写
 		$moduleName4 = $tableName;								// 全小写，下划线间隔(无前缀)
-		
+
 		$content = str_replace ( $exampleName1, $moduleName1, $content );
 		$content = str_replace ( $exampleName2, $moduleName2, $content );
 		$content = str_replace ( $exampleName3, $moduleName3, $content );
@@ -155,7 +155,7 @@ class AddModuleAction {
 		// 重命名文件
 		rename ( $file, str_replace ( ucfirst ( $exampleModuleName ), $moduleName3, $file ) );
 	}
-	
+
 	/**
 	 * 编辑模块界面文件
 	 *
@@ -178,26 +178,26 @@ class AddModuleAction {
 		$exampleName3 = '_' . ucfirst ( $exampleModuleName ); 	// 驼峰法，首字母大写[_Example]
 		$exampleName4 = '__noprefix' . $exampleModuleName;		// 全小写，下划线间隔(无前缀)[__noprefixexample]
 		$exampleName5 = '_prefix' . $exampleModuleName;			// 驼峰法，有前缀[_prefixexample]
-		
+
 		$moduleName1 = $tablePrefix . '_' .$tableName; 			// 全小写，下划线间隔
 		$moduleName2 = formatJavaStyle ( $tableName, false ); 	// 驼峰法，首字母小写
 		$moduleName3 = formatJavaStyle ( $tableName, true ); 	// 驼峰法，首字母大写
 		$moduleName4 = $tableName;								// 全小写，下划线间隔(无前缀)
 		$moduleName5 = formatJavaStyle ( $tablePrefix . '_' . $tableName, false ); 	// 驼峰法，首字母小写(有前缀)
-		
+
 		$content = str_replace ( $exampleName1, $moduleName1, $content );
 		$content = str_replace ( $exampleName2, $moduleName2, $content );
 		$content = str_replace ( $exampleName3, $moduleName3, $content );
 		$content = str_replace ( $exampleName4, $moduleName4, $content );
 		$content = str_replace ( $exampleName5, $moduleName5, $content );
-		
+
 		// 写入字段
 		$fieldThs = '';
 		$fieldTds = '';
 		$fieldTrs = '';
 		$fieldDivs = '';
 		$fieldDivEdits = '';
-		
+
 		foreach ( $columnsInfo as $column ) {
 			// 主键ID不做处理
 			if ($column ['Field'] == 'id') {
@@ -222,17 +222,19 @@ class AddModuleAction {
 		$content = str_replace ( '<tr></tr>', $fieldTrs, $content );
 		$content = str_replace ( '<div></div>', $fieldDivs, $content );
 		$content = str_replace ( '<divEdit></divEdit>', $fieldDivEdits, $content );
-		
+
 		// 写入文件
 		file_put_contents ( $file, $content );
+		$newFile = str_replace ( $exampleModuleName, $moduleName4, $file );
+		$newFile = str_replace ( $exampleModulePrefix.'_', $tablePrefix.'_', $newFile );
 		// 重命名文件
-		rename ( $file, str_replace ( $exampleModuleName, $moduleName4, $file ) );
+		rename ( $file, $newFile );
 	}
-	
+
 	/**
 	 * 修改实体文件
 	 *
-	 * @param unknown $file 需要修改的文件  	
+	 * @param unknown $file 需要修改的文件
 	 * @param unknown $fields 表字段信息
 	 * @return boolean
 	 */
@@ -246,12 +248,12 @@ class AddModuleAction {
 			$fieldStr .= "\t" . 'public ';
 			$fieldStr .= '$' . formatJavaStyle ( $field, false ) . ';' . "\r\n";
 		}
-		
+
 		$content = str_replace ( 'public $_extendsFields;', $fieldStr, $content );
 		// 写入文件
 		file_put_contents ( $file, $content );
 	}
-	
+
 	/**
 	 * 修改SQL文件
 	 *
@@ -280,7 +282,7 @@ class AddModuleAction {
 			}
 			$i ++;
 		}
-		
+
 		$fieldWhereStr = '';
 		$fieldWhereStrWithPrefix = '';
 		$i = 1;
@@ -289,12 +291,12 @@ class AddModuleAction {
 			$fieldWhereStr .= formatJavaStyle ( $field, false ) . '">';
 			$fieldWhereStr .= 'and ' . $field . '=:' . formatJavaStyle ( $field, false );
 			$fieldWhereStr .= '</isNotEmpty>';
-			
+
 			$fieldWhereStrWithPrefix .= "\t\t" . '<isNotEmpty property="';
 			$fieldWhereStrWithPrefix .= formatJavaStyle ( $field, false ) . '">';
 			$fieldWhereStrWithPrefix .= 'and ' . $tablePrefix . '__example.' . $field . '=:' . formatJavaStyle ( $field, false );
 			$fieldWhereStrWithPrefix .= '</isNotEmpty>';
-			
+
 			if ($i < count ( $fields )) {
 				$fieldWhereStr .= "\r\n";
 				$fieldWhereStrWithPrefix .= "\r\n";
@@ -302,29 +304,29 @@ class AddModuleAction {
 			}
 			$i ++;
 		}
-		
+
 		$content = str_replace ( '$_extends_fields', $fieldStr, $content );
 		$content = str_replace ( '$_extends_where', $fieldWhereStr, $content );
 		$content = str_replace ( '$_extends_prefix_fields', $fieldStrWithPrefix, $content );
 		$content = str_replace ( '$_extends_prefix_where', $fieldWhereStrWithPrefix, $content );
-		
+
 		// 格式化模块名称为
 		$exampleName1 = '__' . $exampleModuleName; 				// 全小写，下划线间隔[__example]
 		$exampleName2 = '_' . $exampleModuleName; 				// 驼峰法，首字母小写[_example]
 		$exampleName3 = '_' . ucfirst ( $exampleModuleName ); 	// 驼峰法，首字母大写[_Example]
-		
+
 		$moduleName1 = $tableName; 								// 全小写，下划线间隔
 		$moduleName2 = formatJavaStyle ( $tableName, false ); 	// 驼峰法，首字母小写
 		$moduleName3 = formatJavaStyle ( $tableName, true ); 	// 驼峰法，首字母大写
-		
+
 		$content = str_replace ( $exampleName1, $moduleName1, $content );
 		$content = str_replace ( $exampleName2, $moduleName2, $content );
 		$content = str_replace ( $exampleName3, $moduleName3, $content );
-		
+
 		// 写入文件
 		file_put_contents ( $file, $content );
 	}
-	
+
 	/**
 	 * 编辑菜单文件
 	 *
@@ -343,16 +345,16 @@ class AddModuleAction {
 		$exampleName1 = '__' . $exampleModuleName; 				// 全小写，下划线间隔[__example]
 		$exampleName2 = '_' . $exampleModuleName; 				// 驼峰法，首字母小写[_example]
 		$exampleName3 = '_' . ucfirst ( $exampleModuleName ); 	// 驼峰法，首字母大写[_Example]
-		
+
 		$moduleName1 = $tablePrefix . '_' . $tableName; 		// 全小写，下划线间隔
 		$moduleName2 = formatJavaStyle ( $tableName, false ); 	// 驼峰法，首字母小写
 		$moduleName3 = formatJavaStyle ( $tableName, true ); 	// 驼峰法，首字母大写
-		
+
 		$content = str_replace ( '<!-- $_moduleUrl -->', '<li><a href="javascript:showView(\'__example\',\'_ExampleView\')">_Example管理</a></li>' . "\r\n\t\t\t\t" . '<!-- $_moduleUrl -->', $content );
 		$content = str_replace ( $exampleName1, $moduleName1, $content );
 		$content = str_replace ( $exampleName2, $moduleName2, $content );
 		$content = str_replace ( $exampleName3, $moduleName3, $content );
-		
+
 		// 写入文件
 		file_put_contents ( $file, $content );
 	}

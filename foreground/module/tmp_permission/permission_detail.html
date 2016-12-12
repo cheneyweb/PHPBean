@@ -1,0 +1,34 @@
+<h2 class="sub-header">Permission详情</h2>
+<div class="form-group">
+	<button type="button" class="btn btn-primary" onclick="javascript:showView('tmp_permission','PermissionView')">返回</button>
+</div>
+<table class="table table-bordered">
+	<tr>
+		<th class="col-sm-3">权限编码</th>
+		<td><{$item->code}></td>
+	</tr>
+	<tr>
+		<th class="col-sm-3">权限名称</th>
+		<td><{$item->name}></td>
+	</tr>
+	<tr>
+		<th class="col-sm-3">创建者</th>
+		<td><{$item->operator_create}></td>
+	</tr>
+	<tr>
+		<th class="col-sm-3">创建日期</th>
+		<td><{$item->datetime_create}></td>
+	</tr>
+	<tr>
+		<th class="col-sm-3">修改者</th>
+		<td><{$item->operator_modify}></td>
+	</tr>
+	<tr>
+		<th class="col-sm-3">修改日期</th>
+		<td><{$item->datetime_modify}></td>
+	</tr>
+</table>
+<{block name="extra"}>
+<script type="text/javascript">
+</script>
+<{/block}>
