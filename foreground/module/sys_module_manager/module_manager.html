@@ -1,0 +1,106 @@
+<h2 class="sub-header">模块管理</h2>
+<!-- 查询表单 -->
+<form id="queryForm" class="form-horizontal" method="POST">
+	<!-- 隐藏域值 -->
+	<input type=hidden name="bean" value="Module" />
+	<input type=hidden id="queryBegin" name="queryBegin" value="<{$query.queryBegin}>" />
+	<input type=hidden id="queryCount" name="queryCount" value="<{$query.queryCount}>" />
+	<input type=hidden id="pageCount" name="pageCount" value="<{$query.pageCount}>" />
+	<div class="form-group">
+		<div class="col-sm-3">
+			<div class="input-group">
+				<div class="input-group-addon">模块前缀</div>
+				<input type="text" name="code" value="<{$query.code}>" class="form-control">
+			</div>
+		</div>
+		<div class="col-sm-3">
+			<div class="input-group">
+				<div class="input-group-addon">模块名</div>
+				<input type="text" name="name" value="<{$query.name}>" class="form-control">
+			</div>
+		</div>
+		<div class="col-sm-3">
+			<div class="input-group">
+				<div class="input-group-addon">创建日期</div>
+				<input type="text" class="form-control">
+			</div>
+		</div>
+	</div>
+	<div class="form-group">
+		<div class="col-sm-1">
+			<button id="queryBtn" type=button class="btn btn-default" onclick="javascript:queryLoad('queryForm','sys_module_manager','ModuleManagerView')">查询</button>
+		</div>
+		<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addModal">新增</button>
+		<button type="button" class="btn btn-danger" onclick="javascript:operateSelectedItem('sys_module_manager','DeleteModuleAction')">删除</button>
+	</div>
+</form>
+<!-- 展示列表 -->
+<table class="table table-bordered table-condensed">
+	<thead>
+		<tr>
+			<th><input onClick="javascript:selectAll(this,'sysModuleManager')" type="checkbox"/></th>
+			<th>模块前缀</th>
+			<th>模块名</th>
+			<th>创建日期</th>
+			<th>操作</th>
+		</tr>
+	</thead>
+	<tbody>
+		<{foreach item=item from=$modules}>
+		<tr>
+			<th scope="row"><input name="sysModuleManagerItem" type="checkbox" value="<{$item->id}>" /></th>
+			<td><{$item->code}></td>
+			<td><{$item->name}></td>
+			<td><{$item->datetime_create}></td>
+			<td><a href="#">详情</a></td>
+		</tr>
+		<{/foreach}>
+	</tbody>
+</table>
+<!-- 分页控件 -->
+<{include file="../../../foreground/module/sys_query/query.html"}>
+<{block name="extra"}>
+<!-- 新增帐号弹出窗口 -->
+<div class="modal fade" id="addModal" tabindex="-1" role="dialog"
+	aria-labelledby="#addModalLabel">
+	<div class="modal-dialog modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+					aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<h4 class="modal-title" id="#addModalLabel">新增模块</h4>
+			</div>
+			<div class="modal-body">
+				<!-- 新增表单 -->
+				<form id="addForm" class="form-horizontal" method="POST">
+					<!-- Admin实体 -->
+					<input type=hidden name="bean" value="Module" />
+					<div class="form-group">
+						<div class="col-sm-4">
+							<div class="input-group">
+								<div class="input-group-addon">模块前缀</div>
+								<input name="code" type="text" placeholder="全小写" class="form-control">
+							</div>
+						</div>
+						<div class="col-sm-4">
+							<div class="input-group">
+								<div class="input-group-addon">模块名</div>
+								<input name="name" type="text" placeholder="全小写,下划线间隔" class="form-control">
+							</div>
+						</div>
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+				<button type="button" class="btn btn-primary" onclick="javascript:formModuleActionModal('addForm','sys_module_manager','AddModuleAction','addModal')">保存</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+</script>
+<{/block}>

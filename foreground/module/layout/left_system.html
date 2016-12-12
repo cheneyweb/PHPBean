@@ -1,0 +1,21 @@
+﻿<{extends file="../layout/common/nav.html"}> 
+<{block name="default"}>
+<div class="container-fluid">
+	<div class="col-md-2 sidebar">
+		<ul class="nav nav-sidebar">				
+			<{if <{hasPermission code="SYSTEM"}> }>
+			<li><a data-toggle="collapse" href="#system">系统管理</a></li>
+			<ul id="system" class="collapse">
+				<li><a href="javascript:showView('sys_admin','AdminView')">帐号管理</a></li>
+				<li><a href="javascript:showView('sys_role','RoleView')">角色管理</a></li>
+				<!-- <li><a href="#">系统公告</a></li> -->
+			</ul>
+			<{/if}>
+		</ul>
+	</div>
+	<div id="content" class="col-md-10 main" style="margin-top:-30px;margin-left:-60px;">
+		<{block name="content"}><{/block}>
+	</div>
+</div>
+<{block name="extra"}><{/block}>
+<{/block}>

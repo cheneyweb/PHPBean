@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sqlMap>
+	<include id="basicColumn">
+		id,
+		code,
+		name,
+		datetime_create
+	</include>
+
+	<include id="where">
+		where 1=1
+		<isNotEmpty property="id">and id=:id</isNotEmpty>
+		<isNotEmpty property="code">and code=:code</isNotEmpty>
+		<isNotEmpty property="name">and name=:name</isNotEmpty>
+		<isNotEmpty property="datetimeCreate">and datetime_create=:datetimeCreate</isNotEmpty>
+	</include>
+	
+	<select id="queryPage">
+		select
+		<include refid="basicColumn" />
+		from sys_module
+		<include refid="where" />
+		limit queryBegin=:queryBegin,queryCount=:queryCount
+	</select>
+	
+	<select id="queryPageCount">
+		select ceil(count(1)/queryCount=:queryCount) as pageCount
+		from sys_module
+		<include refid="where" />
+	</select>
+</sqlMap>
