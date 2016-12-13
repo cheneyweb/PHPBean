@@ -7,7 +7,7 @@
 		<link href="foreground/frame/bootstrap3/css/bootstrap.min.css" rel="stylesheet" media="screen">
 		<script src="foreground/frame/jquery/jquery-2.0.3.js"></script>
 		<script src="foreground/frame/bootstrap3/js/bootstrap.min.js"></script>
-		
+
 		<style>
 		</style>
 	</head>
@@ -32,7 +32,8 @@
       <div class="container">
         <h1>PHPBean</h1>
         <p>	一个集成了Struts,Hibernate,Spring...的神奇而无比精致小巧的PHPWeb框架——它很像Java?也许,它就是Java</p>
-        <p><a class="btn btn-primary btn-lg" role="button" href="index_admin.php">前往演示系统 &raquo;</a></p>
+        <p><a class="btn btn-primary btn-lg" role="button" href="index_admin.php">前往演示系统(MVC) &raquo;</a></p>
+        <p><a class="btn btn-primary btn-lg" role="button" href="index_admin_mvvm.html">前往演示系统(MVVM) &raquo;</a></p>
       </div>
     </div>
 
