@@ -1,5 +1,5 @@
 # PHPBean
-整个框架划分两大部分——“前端”和“后台”,PHP的开发者们不需要再羡慕Java上的各种优秀的框架的便捷性了，在PHPBean这个框架中，尝试尽所有可能地把Java Web的开发思想引入PHP，主体思想为MVC+MVVM，包括struts,mybatis,spring的引入（使用PHP来实现），例如强制规范使用Bean作为数据传输单位，例如规范的文件夹分类和文件命名。这个框架的开发灵感来源于Magento框架和Java的多种开源框架，在他们的基础上加以理解和重组。PS:纯MVVM架构的PHPBean-MVVM框架也已经在开发中...
+整个框架划分两大部分——“前端”和“后台”,PHP的开发者们不需要再羡慕Java上的各种优秀的框架的便捷性了，在PHPBean这个框架中，尝试尽所有可能地把Java Web的开发思想引入PHP，主体思想为MVC+MVVM，包括struts,spring,mybatis的引入（使用PHP来实现），例如强制规范使用Bean作为数据传输单位，例如规范的文件夹分类和文件命名。这个框架的开发灵感来源于Magento框架和Java的多种开源框架，在他们的基础上加以理解和重组。PS:纯MVVM架构的PHPBean-MVVM框架也已经在开发中...
 
 使用说明
 >
