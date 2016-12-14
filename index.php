@@ -31,9 +31,8 @@
     <div class="jumbotron">
       <div class="container">
         <h1>PHPBean</h1>
-        <p>	一个集成了Struts,Hibernate,Spring...的神奇而无比精致小巧的PHPWeb框架——它很像Java?也许,它就是Java</p>
-        <p><a class="btn btn-primary btn-lg" role="button" href="index_admin.php">前往演示系统(MVC) &raquo;</a></p>
-        <p><a class="btn btn-primary btn-lg" role="button" href="index_admin_mvvm.html">前往演示系统(MVVM) &raquo;</a></p>
+        <p>	一个集成了Struts,Spring,Mybatis...的神奇而无比精致小巧的PHPWeb框架——它很像Java?也许,它就是Java</p>
+        <p><a class="btn btn-primary btn-lg" role="button" href="index_admin.php">前往演示系统 &raquo;</a></p>
       </div>
     </div>
 
@@ -51,7 +50,7 @@
           <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
        </div>
         <div class="col-md-4">
-          <h2>Dao封装</h2>
+          <h2>Mybatis封装</h2>
           <p>数据层应该是开发者们最烦,却又不得不面对的工作吧。无论是在Java上还是PHP上,都有着许许多多成熟流行的Dao框架,不过,这一次,PHPBean在数据库层的封装上提出的理念是——程序员为什么需要写SQL,而不是简单粗暴地把Bean塞到数据库呢?PHPBean正是这么做的</p>
           <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
         </div>

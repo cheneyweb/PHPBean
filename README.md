@@ -1,5 +1,5 @@
 # PHPBean
-整个框架划分两大部分——“前端”和“后台”,PHP的开发者们不需要再羡慕Java上的各种优秀的框架的便捷性了，在PHPBean这个框架中，尝试尽所有可能地把Java Web的开发思想引入PHP，主体思想为MVC+MVVM，包括struts,mybatis,spring的引入（使用PHP来实现），例如强制规范使用Bean作为数据传输单位，例如规范的文件夹分类和文件命名。这个框架的开发灵感来源于Magento框架和Java的多种开源框架，在他们的基础上加以理解和重组。
+整个框架划分两大部分——“前端”和“后台”,PHP的开发者们不需要再羡慕Java上的各种优秀的框架的便捷性了，在PHPBean这个框架中，尝试尽所有可能地把Java Web的开发思想引入PHP，主体思想为MVC+MVVM，包括struts,mybatis,spring的引入（使用PHP来实现），例如强制规范使用Bean作为数据传输单位，例如规范的文件夹分类和文件命名。这个框架的开发灵感来源于Magento框架和Java的多种开源框架，在他们的基础上加以理解和重组。PS:纯MVVM架构的PHPBean-MVVM框架也已经在开发中...
 
 使用说明
 >
@@ -98,7 +98,7 @@ Action层API
 	
 框架层次
 >
-	视图层——如果使用foreground-mvvm则结合Vue可搭建完美MVVM前后端分离；如果使用foreground则结合Smarty后端渲染,唯一需要注意的是交互表单的属性有些许特殊要求（例如:表单需要添加隐藏域）
+	视图层——这一层使用Smarty进行后端渲染,除了渲染工作在后端进行,本身前后端交互逻辑已经尽可能分离,唯一需要注意的是交互表单的属性有些许特殊要求（例如:表单需要添加隐藏域）
 	控制层——这一层负责传输数据
 	插件层——这一层与业务层同级,用于处理复杂多状态流转业务
 	业务层——这一层负责业务处理
@@ -115,8 +115,7 @@ Action层API
 
 前端
 >
-	foreground——传统MVC前端框架
-	foreground-mvvm——全新MVVM前端框架
+	foreground——MVC前端框架(后端模板渲染,纯前端渲染项目参见PHPBean-MVVM)
 	集成bootstrap3
 	集成jquery2.0.3,不支持IE6,7,8
 	集成ztree3.5.24
@@ -172,7 +171,6 @@ Action层API
         	bootstrap-datetimepicker
             bootstrap3
             jquery
-            vue
             ztree
         custom——定制css和js
         	css——定制css
@@ -208,4 +206,4 @@ Action层API
 >
 	2016.05.28:全新2.0架构升级
 	
-	后续有待实现：使用Vue.js替换Smarty，全局系统配置，全局审核流
+	后续有待实现：全局系统配置，全局审核流
