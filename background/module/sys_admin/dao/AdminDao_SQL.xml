@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sqlMap>
+	<include id="basicColumn">
+		id,
+		account,
+		password,
+		operator_create,
+		operator_modify,
+		datetime_create,
+		datetime_modify
+	</include>
+	
+	<include id="detailColumn">
+		sys_admin.id,
+		sys_admin.account,
+		sys_admin.password,
+		sys_admin.operator_create,
+		sys_admin.operator_modify,
+		sys_admin.datetime_create,
+		sys_admin.datetime_modify,
+		
+		group_concat(sys_admin_role.role_id) as role_ids,
+		group_concat(sys_role.code) as role_codes,
+		group_concat(sys_role.name) as role_names,
+		
+		(select group_concat(sys_role_permission.permission_id) as role_permission_ids
+		from sys_role_permission where sys_role_permission.role_id = sys_role.id) role_permission_ids
+	</include>
+	
+	<include id="detailWhere">
+		where 1=1
+		<isNotEmpty property="id">and sys_admin.id=:id</isNotEmpty>
+		<isNotEmpty property="account">and sys_admin.account=:account</isNotEmpty>
+		<isNotEmpty property="password">and sys_admin.password=:password</isNotEmpty>
+	</include>
+
+	<include id="where">
+		where 1=1
+		<isNotEmpty property="id">and id=:id</isNotEmpty>
+		<isNotEmpty property="account">and account like '%' :account '%'</isNotEmpty>
+		<isNotEmpty property="password">and password=:password</isNotEmpty>
+		<isNotEmpty property="operatorCreate">and operator_create=:operatorCreate</isNotEmpty>
+		<isNotEmpty property="operatorModify">and operator_modify=:operatorModify</isNotEmpty>
+		<isNotEmpty property="datetimeCreate">and datetime_create &lt;= date_add(:datetimeCreate, INTERVAL 1 day)</isNotEmpty>
+		<isNotEmpty property="datetimeModify">and datetime_modify=:datetimeModify</isNotEmpty>
+	</include>
+	
+	<select id="queryPage">
+		select
+		<include refid="basicColumn" />
+		from sys_admin
+		<include refid="where" />
+		order by datetime_create desc
+		limit queryBegin=:queryBegin,queryCount=:queryCount
+	</select>
+	
+	<select id="queryPageCount">
+		select ceil(count(1)/queryCount=:queryCount) as pageCount
+		from sys_admin
+		<include refid="where" />
+	</select>
+	
+	<select id="queryAdmin">
+		select
+		<include refid="detailColumn" />
+		from sys_admin
+		left join sys_admin_role on sys_admin.id = sys_admin_role.admin_id
+		left join sys_role on sys_role.id = sys_admin_role.role_id
+		<include refid="detailWhere" />
+		group by sys_admin.id
+	</select>
+</sqlMap>

@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sqlMap>
+	<include id="basicColumn">
+		id,
+		code,
+		name,
+		operator_create,
+		datetime_create,
+		operator_modify,
+		datetime_modify
+	</include>
+
+	<include id="detailColumn">
+		sys_role.id,
+		sys_role.code,
+		sys_role.name,
+		sys_role.operator_create,
+		sys_role.datetime_create,
+		sys_role.operator_modify,
+		sys_role.datetime_modify
+	</include>
+
+	<include id="rolePermissionColumn">
+		sys_role.id,
+		sys_role.code,
+		sys_role.name,
+		sys_role.operator_create,
+		sys_role.datetime_create,
+		sys_role.operator_modify,
+		sys_role.datetime_modify,
+
+		group_concat(sys_role_permission.permission_id) as permission_ids
+	</include>
+
+	<include id="where">
+		where 1=1
+		<isNotEmpty property="id">and id=:id</isNotEmpty>
+		<isNotEmpty property="code">and code=:code</isNotEmpty>
+		<isNotEmpty property="name">and name=:name</isNotEmpty>
+		<isNotEmpty property="operatorCreate">and operator_create=:operatorCreate</isNotEmpty>
+		<isNotEmpty property="datetimeCreate">and datetime_create=:datetimeCreate</isNotEmpty>
+		<isNotEmpty property="operatorModify">and operator_modify=:operatorModify</isNotEmpty>
+		<isNotEmpty property="datetimeModify">and datetime_modify=:datetimeModify</isNotEmpty>
+	</include>
+
+	<include id="detailWhere">
+		where 1=1
+		<isNotEmpty property="id">and sys_role.id=:id</isNotEmpty>
+		<isNotEmpty property="code">and sys_role.code=:code</isNotEmpty>
+		<isNotEmpty property="name">and sys_role.name=:name</isNotEmpty>
+		<isNotEmpty property="operatorCreate">and sys_role.operator_create=:operatorCreate</isNotEmpty>
+		<isNotEmpty property="datetimeCreate">and sys_role.datetime_create=:datetimeCreate</isNotEmpty>
+		<isNotEmpty property="operatorModify">and sys_role.operator_modify=:operatorModify</isNotEmpty>
+		<isNotEmpty property="datetimeModify">and sys_role.datetime_modify=:datetimeModify</isNotEmpty>
+	</include>
+
+	<select id="queryPage">
+		select
+		<include refid="basicColumn" />
+		from sys_role
+		<include refid="where" />
+		order by datetime_create desc
+		limit queryBegin=:queryBegin,queryCount=:queryCount
+	</select>
+
+	<select id="queryPageCount">
+		select ceil(count(1)/queryCount=:queryCount) as pageCount
+		from sys_role
+		<include refid="where" />
+	</select>
+
+	<select id="queryRole">
+		select
+		<include refid="rolePermissionColumn" />
+		from sys_role
+		left join sys_role_permission on sys_role.id = sys_role_permission.role_id
+		<include refid="detailWhere" />
+	</select>
+
+	<select id="queryRoleArr">
+		select
+		<include refid="detailColumn" />
+		from sys_role
+		<include refid="detailWhere" />
+	</select>
+</sqlMap>

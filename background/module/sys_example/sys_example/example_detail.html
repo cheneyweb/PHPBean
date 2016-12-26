@@ -1,0 +1,52 @@
+<div id="_exampleDetailApp">
+	<h2 class="sub-header">_Example详情</h2>
+	<!-- 操作信息提示 -->
+    <respmsg :resp-msg="respMsg"></respmsg>
+	<div class="form-group">
+		<button type="button" class="btn btn-primary" @click="showHtml(listHtml)">返回</button>
+	</div>
+	<table class="table table-bordered"><tr></tr>
+	</table>
+</div>
+<script type="text/javascript">
+$(function() {
+	new VueBase({
+	    el: '#_exampleDetailApp',
+	    data: {
+	        detailUrl: '../../../../background/module/__example/view/_ExampleDetailView.php',
+
+	        listHtml: '../../../../foreground/module/__example/__noprefixexample.html',
+
+	        // 映射后台模块名称
+	        bean:'_Example',
+	        entity:{},
+	        respMsg: ''
+	    },
+	    created() {
+            this.queryLoad()
+        },
+	    methods: {
+	        queryLoad: function() {
+	            var vm = this
+	            // 获取ID
+	            var id = location.href.split('#')[1]
+	            if(id != null && id != ''){
+		            vm.$http.post(vm.detailUrl, {bean:vm.bean,id:id})
+		                .then((sucResp) => {
+		                	var respObj = ($.parseJSON($.trim(sucResp.data)))
+	                        vm.respMsg = respObj.respMsg
+	                        if(vm.respMsg == 'Y'){
+			                	// 绑定返回的实体对象
+			                    vm.entity = respObj
+			                }
+		                }, (errResp) => {
+		                	vm.respMsg = errResp.data
+		                });
+	            }else{
+	            	vm.respMsg = '详情入参ID不能为空'
+	            }
+	        }
+	    }
+	});
+});
+</script>

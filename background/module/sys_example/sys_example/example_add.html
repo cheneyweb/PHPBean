@@ -1,0 +1,40 @@
+<div id="add_ExampleApp">
+	<h2 class="sub-header" style="margin-top:35px;">新增_Example</h2>
+	<!-- 操作信息提示 -->
+    <respmsg :resp-msg="respMsg"></respmsg>
+	<!-- 新增表单 -->
+	<form class="form-horizontal" method="POST">
+		<div class="form-group">
+			<div class="col-sm-1">
+				<button type="button" class="btn btn-primary" @click="add(null)">保存</button>
+			</div>
+			<button type="button" class="btn btn-primary" @click="showHtml(listHtml)">取消</button>
+		</div>
+		<!-- Bean实体 -->
+		<div class="form-group"><div></div>
+		</div>
+	</form>
+</div>
+<script type="text/javascript">
+$(function() {
+	new VueBase({
+	    el: '#add_ExampleApp',
+	    data: {
+	        addUrl: '../../../../background/module/__example/controller/Add_ExampleAction.php',
+
+	        listHtml: '../../../../foreground/module/__example/__noprefixexample.html',
+	        // 映射的后台模块名称
+        	bean:'_Example',
+	        entity: {},
+            // 返回信息
+        	respMsg: 'Y'
+	    },
+	    methods: {
+            afterAdd: function(){
+            	var vm = this
+            	vm.showHtml(vm.listHtml)
+            }
+        }
+	});
+});
+</script>

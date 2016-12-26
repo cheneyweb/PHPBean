@@ -1,10 +1,10 @@
 # PHPBean
-整个框架划分两大部分——“前端”和“后台”,PHP的开发者们不需要再羡慕Java上的各种优秀的框架的便捷性了，在PHPBean这个框架中，尝试尽所有可能地把Java Web的开发思想引入PHP，主体思想为MVC+MVVM，包括struts,spring,mybatis的引入（使用PHP来实现），例如强制规范使用Bean作为数据传输单位，例如规范的文件夹分类和文件命名。这个框架的开发灵感来源于Magento框架和Java的多种开源框架，在他们的基础上加以理解和重组。PS:纯MVVM架构的PHPBean-MVVM框架也已经在开发中...
+整个框架划分两大部分——“前端”和“后台”,PHP的开发者们不需要再羡慕Java上的各种优秀的框架的便捷性了，在PHPBean这个框架中，前端使用Vue进行组件化构建，后端则尝试尽所有可能地把Java Web的开发思想引入PHP，主体思想为MVVM+MVC，包括struts,mybatis,spring的引入（使用PHP来实现），例如强制规范使用Bean作为数据传输单位，规范的文件夹分类和文件命名，状态机流程引入。这个框架的开发灵感来源于Magento框架和Java的多种开源框架，在他们的基础上加以理解和重组。
 
 使用说明
 >
 	1,数据库配置
-		数据库连接:PDOUtil.php
+		数据库连接:PDOBase.php
 		数据表前缀:模块中的entity中设置$tablePrefix
 	2,基于shell文件夹中的phpbean.sql创建数据库
 	3,使用模块管理功能创建新模块(输入表前缀和表名)
@@ -15,10 +15,10 @@
 		文件夹:下划线，全小写
 		文件名:驼峰法，根据是否是类而决定是否首字母【大】写
 	后台代码：
+		常量名：下划线，全【大】写
 		类名：驼峰法，首字母【大】写
 		方法名：驼峰法，首字母小写
 		变量名：驼峰法，首字母小写
-		常量名：下划线，全【大】写
 		SQL输出：下划线，全小写
 	前台代码：
 		元素id：驼峰法，首字母小写
@@ -66,9 +66,9 @@ DAO层API
 		$this->pDOUtil->update ( $entity , $query)
 		// 更新数据对象，NULL也更新（$query为null时，根据$entity的id更新）[对象实体，查询条件对象]
 		$this->pDOUtil->updateAll ( $entity , $query)
-		// 查询数据对象数组（数组中的单个对象使用“.”来获取属性）[对象实体]
+		// 查询数据对象数组[对象实体]
 		$this->pDOUtil->queryArr ( $entity )
-		// 查询单个数据对象（使用“['属性名']”来获取属性）[对象实体]
+		// 查询单个数据对象[对象实体]
 		$this->pDOUtil->queryObj ( $entity )
 	用户自定义SQL：
 		// 查询分页数据[对象实体]
@@ -94,11 +94,11 @@ Action层API
 	Delete...Action.php使用案例：
 		通过$_POST ['ids']来获取需要删除的对象id
 	Update...Action.php使用案例：
-		通过$_POST ['itemId']来获取需要更新的对象id
+		通过$entity = $this->struts->genEntity ()来获取需要更新的对象
 	
 框架层次
 >
-	视图层——这一层使用Smarty进行后端渲染,除了渲染工作在后端进行,本身前后端交互逻辑已经尽可能分离,唯一需要注意的是交互表单的属性有些许特殊要求（例如:表单需要添加隐藏域）
+	视图层——如果使用foreground-mvvm则结合Vue可搭建完美MVVM前后端分离；如果使用foreground则结合Smarty后端渲染,唯一需要注意的是交互表单的属性有些许特殊要求（例如:表单需要添加隐藏域）
 	控制层——这一层负责传输数据
 	插件层——这一层与业务层同级,用于处理复杂多状态流转业务
 	业务层——这一层负责业务处理
@@ -115,7 +115,7 @@ Action层API
 
 前端
 >
-	foreground——MVC前端框架(后端模板渲染,纯前端渲染项目参见PHPBean-MVVM)
+	使用Vue作为全新MVVM前端框架
 	集成bootstrap3
 	集成jquery2.0.3,不支持IE6,7,8
 	集成ztree3.5.24
@@ -153,13 +153,14 @@ Action层API
 				service——业务层（即对应Java中的Service集合）
 				validate——校验层（独立增加校验，防范XSS和SQL注入等攻击）
 				webservice——外部API层(提高给APP等外部应用)
-			sys_ajax——ajax演示模块
 			sys_query——分页控件模块
 			sys_moudle_manage——模块管理模块
 				config
 					status.xml——模块实体状态配置文件
 				controller
 					StatusEngine.php——状态机引擎
+				service
+					BaseService.php——业务服务基类
 			sys_role——角色模块（系统自带模块，用于配置系统用户角色和其权限）
 			sys_global_config——系统全局配置模块（系统自带模块，用于系统全局配置）
 			sys_example——模版模块（用于模块生成）
@@ -171,18 +172,22 @@ Action层API
         	bootstrap-datetimepicker
             bootstrap3
             jquery
+            vue
             ztree
         custom——定制css和js
         	css——定制css
         	js——定制js
-        		ajax
+        		vue
+        			vue_base.js(组件基类)
         		query
-        			action.js(表单行为)
-        			modal.js(弹窗行为)
         			query.js(查询行为)
         			show.js(页面行为)
+        			vue_query_page.js(封装ztree的vue组件)
         		runtime_validator
+        			runtime_validator.js(实时动态校验)
         		tree
+        			tree_permission.js(权限树)
+        			vue_ztree.js(封装ztree的vue树组件)
         module——模块根目录
         	layout——布局模版
 				common——通用模版
@@ -191,12 +196,12 @@ Action层API
 				left_module.html——模块管理左侧菜单
 				left_system.html——系统管理左侧菜单
         	sys_admin——系统用户模块
-			sys_ajax——ajax演示模块
 			sys_module_manager——模块管理
 			sys_query——分页查询控件
 			sys_role——系统角色模块
 	log——系统LOG
     shell——SQL备份
+    	jshint.conf(JS校验配置)
     	phpbean.sql(全库)
     	phpbean_tables.sql(全表)
     	prefix_tablename.sql(基础表SQL)
@@ -204,6 +209,6 @@ Action层API
 
 更新日志
 >
-	2016.05.28:全新2.0架构升级
+	2016.12.19:全新MVVM+MVC架构
 	
-	后续有待实现：全局系统配置，全局审核流
+	后续有待实现:全局系统配置，全局审核流

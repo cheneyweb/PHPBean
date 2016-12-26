@@ -1,0 +1,193 @@
+<div id="roleApp">
+    <h2 class="sub-header">角色管理</h2>
+    <!-- 操作信息提示 -->
+    <respmsg :resp-msg="respMsg"></respmsg>
+    <!-- 查询表单 -->
+    <form class="form-horizontal" method="POST">
+        <div class="form-group">
+            <div class="col-sm-3">
+                <div class="input-group">
+                    <div class="input-group-addon">编号</div>
+                    <input type="text" class="form-control" v-model="query.code" />
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="input-group">
+                    <div class="input-group-addon">创建日期</div>
+                    <input type="text" class="form-control datetimepicker" v-model="query.datetimeCreate" />
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-1">
+                <button id="queryBtn" type="button" class="btn btn-default" @click="queryLoad">查询</button>
+            </div>
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addModal">新增</button>
+            <button type="button" class="btn btn-primary" @click="showHtml(addHtml)">新增页面</button>
+            <button type="button" class="btn btn-danger" @click="deleteByIds">删除</button>
+        </div>
+    </form>
+    <table class="table table-bordered table-condensed">
+        <thead>
+            <tr>
+                <th>
+                    <input type="checkbox" @click="checkAll"/>
+                </th>
+                <th>角色编码</th>
+                <th>角色名称</th>
+                <th>创建者</th>
+                <th>创建日期</th>
+                <th>修改者</th>
+                <th>修改日期</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr v-for="item in entityList">
+                <td scope="row">
+                    <input type="checkbox" :value="item.id" v-model="ids"/>
+                </td>
+                <td>
+                    <a href="#" @click="showModal('roleDetailModal',detailHtml,item.id,$event)">{{item.code}}</a>
+                </td>
+                <td>{{item.name}}</td>
+                <td>{{item.operator_create}}</td>
+                <td>{{item.datetime_create}}</td>
+                <td>{{item.operator_modify}}</td>
+                <td>{{item.datetime_modify}}</td>
+                <td>
+                    <a href="#" @click="showHtml(detailHtml,item.id,$event)">详情页面</a> |
+                    <a href="#" @click="showHtml(editHtml,item.id,$event)">编辑页面</a> |
+                    <a href="#" @click="updateModal('addModal',item.id)">编辑</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <!-- 分页控件 -->
+    <query-page :api-url="queryUrl" :query="query" :query-load="queryLoad"></query-page>
+    <!-- Modal -->
+    <div id="addModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="addModalLabel">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title" id="addModalLabel">新增角色</h4>
+                    <!-- 操作信息提示 -->
+                    <respmsg :resp-msg="respMsg"></respmsg>
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal" method="POST">
+                        <div class="form-group">
+                            <div class="col-sm-4">
+                                <div class="input-group">
+                                    <div class="input-group-addon">角色编码</div>
+                                    <input type="text" class="form-control" v-model="entity.code" />
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="input-group">
+                                    <div class="input-group-addon">角色名称</div>
+                                    <input type="text" class="form-control" v-model="entity.name" />
+                                </div>
+                            </div>
+                        </div>
+                        <!-- 树控件 -->
+                        <ztree tree-name="权限管理" tree-id="treePermission" tree-value-id="permissionIds"></ztree>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button id="addBtn" type="button" class="btn btn-primary" @click="add('addModal')">保存</button>
+                    <button id="updateBtn" style="display:none;" type="button" class="btn btn-primary" @click="update('addModal')">更新</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 详情弹出框 -->
+    <modal modal-id="roleDetailModal" content-id="roleDetailModalContent" modal-name="角色详情"></modal>
+    <!-- <div id="roleDetailModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="roleDetailModalLabel">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title" id="roleDetailModalLabel">角色详情</h4>
+                </div>
+                <div id="roleDetailModalContent" class="modal-body"></div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div> -->
+</div>
+<script type="text/javascript">
+$(function() {
+    Vue.http.options.emulateJSON = true;
+    new VueBase({
+        el: '#roleApp',
+        data: {
+            queryUrl: '../../../../background/module/sys_role/view/RoleView.php',
+            addUrl: '../../../../background/module/sys_role/controller/AddRoleAction.php',
+            updateUrl: '../../../../background/module/sys_role/controller/UpdateRoleAction.php',
+            deleteUrl: '../../../../background/module/sys_role/controller/DeleteRoleAction.php',
+            updateViewUrl:'../../../../background/module/sys_role/view/UpdateRoleView.php',
+
+            addHtml: '../../../../foreground/module/sys_role/role_add.html',
+            detailHtml: '../../../../foreground/module/sys_role/role_detail.html',
+            editHtml: '../../../../foreground/module/sys_role/role_edit.html',
+
+            // 映射的后台模块名称
+            bean:'Role',
+            // ID数组
+            ids:[],
+            // 查询条件
+            query: {
+                queryBegin: '0',
+                queryCount: '10',
+                pageCount: '0',
+                id: '',
+                code: '',
+                datetimeCreate: ''
+            },
+            // 实体对象
+            entity: {
+                id: '',
+                code: '',
+                name: '',
+                permissionIds: ''
+            },
+            // 实体列表
+            entityList: [],
+            // 返回信息
+            respMsg: ''
+        },
+        created() {
+            this.queryLoad()
+        },
+        methods: {
+            // 新增前设置权限树
+            beforeAdd: function(){
+                var vm = this
+                vm.entity.permissionIds = $('#permissionIds').val()
+            },
+            // 后置更新弹窗勾选权限树
+            afterUpdateModal: function(){
+                var vm = this
+                // 权限树自动勾选
+                vm.checkNode('treePermission')
+            },
+            // 更新前设置权限树的值
+            beforeUpdate: function(){
+                var vm = this
+                vm.entity.permissionIds = $('#permissionIds').val()
+            }
+        }
+    });
+    // 额外加载权限树
+    $.fn.zTree.init($('#treePermission'), setting, zNodes);
+});
+</script>

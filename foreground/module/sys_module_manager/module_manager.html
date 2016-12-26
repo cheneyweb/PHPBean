@@ -1,0 +1,151 @@
+<div id="moduleManagerApp">
+	<h2 class="sub-header">模块管理</h2>
+	<!-- 操作信息提示 -->
+	<div class="alert alert-danger" v-show="respMsg != 'Y'">
+	    <strong>{{respMsg}}</strong>
+	</div>
+	<!-- 查询表单 -->
+	<form class="form-horizontal" method="POST">
+		<div class="form-group">
+			<div class="col-sm-3">
+				<div class="input-group">
+					<div class="input-group-addon">模块前缀</div>
+					<input type="text" class="form-control" v-model="query.code">
+				</div>
+			</div>
+			<div class="col-sm-3">
+				<div class="input-group">
+					<div class="input-group-addon">模块名</div>
+					<input type="text" class="form-control" v-model="query.name">
+				</div>
+			</div>
+			<div class="col-sm-3">
+				<div class="input-group">
+					<div class="input-group-addon">创建日期</div>
+					<input type="text" class="form-control" v-model="query.datetimeCreate">
+				</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="col-sm-1">
+				<button type=button class="btn btn-default" @click="queryLoad">查询</button>
+			</div>
+			<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addModal">新增</button>
+			<button type="button" class="btn btn-danger" @click="deleteByIds">删除</button>
+		</div>
+	</form>
+	<!-- 展示列表 -->
+	<table class="table table-bordered table-condensed">
+		<thead>
+			<tr>
+				<th><input type="checkbox" @click="checkAll"/></th>
+				<th>模块前缀</th>
+				<th>模块名</th>
+				<th>创建日期</th>
+				<th>操作</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr v-for="item in entityList">
+				<th scope="row"><input type="checkbox" :value="item.id" v-model="ids"/></th>
+				<td>{{item.code}}</td>
+				<td>{{item.name}}</td>
+				<td>{{item.datetime_create}}</td>
+				<td><a href="#">详情</a></td>
+			</tr>
+		</tbody>
+	</table>
+	<!-- 分页控件 -->
+	<query-page :api-url="queryUrl" :query="query" :query-load="queryLoad"></query-page>
+
+	<!-- 新增弹出窗口 -->
+	<div id="addModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="#addModalLabel">
+		<div class="modal-dialog modal-lg" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h4 class="modal-title" id="#addModalLabel">新增模块</h4>
+					<!-- 操作信息提示 -->
+                    <div class="alert alert-danger" v-show="respMsg != 'Y'">
+                        <strong>{{respMsg}}</strong>
+                    </div>
+				</div>
+				<div class="modal-body">
+					<!-- 新增表单 -->
+					<form class="form-horizontal" method="POST">
+						<!-- 实体 -->
+						<div class="form-group">
+							<div class="col-sm-4">
+								<div class="input-group">
+									<div class="input-group-addon">模块前缀</div>
+									<input type="text" placeholder="全小写" class="form-control" v-model="entity.code">
+								</div>
+							</div>
+							<div class="col-sm-4">
+								<div class="input-group">
+									<div class="input-group-addon">模块名</div>
+									<input type="text" placeholder="全小写,下划线间隔" class="form-control" v-model="entity.name">
+								</div>
+							</div>
+						</div>
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+					<button type="button" class="btn btn-primary" @click="add('addModal')">保存</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+$(function() {
+    Vue.http.options.emulateJSON = true;
+    new VueBase({
+        el: '#moduleManagerApp',
+        data: {
+            queryUrl: '../../../../background/module/sys_module_manager/view/ModuleManagerView.php',
+            addUrl: '../../../../background/module/sys_module_manager/controller/AddModuleAction.php',
+            updateUrl: '../../../../background/module/sys_module_manager/controller/UpdateModuleAction.php',
+            deleteUrl: '../../../../background/module/sys_module_manager/controller/DeleteModuleAction.php',
+            updateViewUrl:'../../../../background/module/sys_module_manager/view/UpdateModuleManagerView.php',
+
+            addHtml: '../../../../foreground/module/sys_module_manager/module_manager_add.html',
+            detailHtml: '../../../../foreground/module/sys_module_manager/module_manager_detail.html',
+            editHtml: '../../../../foreground/module/sys_module_manager/module_manager_edit.html',
+
+            // 映射的后台模块名称
+            bean:'Module',
+            // ID数组
+            ids:[],
+            // 查询条件
+            query: {
+                queryBegin: '0',
+                queryCount: '10',
+                pageCount: '0',
+                id: '',
+                code: '',
+                datetimeCreate: ''
+            },
+            // 实体对象
+            entity: {
+                id: '',
+                code: '',
+                name: '',
+            },
+            // 实体列表
+            entityList: [],
+            // 返回信息
+            respMsg: ''
+        },
+        created() {
+            this.queryLoad()
+        },
+        methods: {
+        }
+    });
+});
+</script>
+

@@ -1,0 +1,88 @@
+<div id="updateRoleApp">
+	<h2 class="sub-header">编辑角色</h2>
+	<!-- 操作信息提示 -->
+    <respmsg :resp-msg="respMsg"></respmsg>
+	<!-- 更新表单 -->
+	<form class="form-horizontal" method="POST">
+		<div class="form-group">
+			<div class="col-sm-1">
+				<button type="button" class="btn btn-primary" @click="update(null)">更新</button>
+			</div>
+			<button type="button" class="btn btn-primary" @click="showHtml(listHtml)">取消</button>
+		</div>
+		<div class="form-group">
+			<div class="col-sm-4">
+				<div class="input-group">
+					<div class="input-group-addon">角色编码</div>
+					<input type="text" class="form-control" v-model="entity.code"/>
+				</div>
+			</div>
+			<div class="col-sm-4">
+				<div class="input-group">
+					<div class="input-group-addon">角色名</div>
+					<input type="text" class="form-control" v-model="entity.name"/>
+				</div>
+			</div>
+		</div>
+		<ztree tree-name="权限管理" tree-id="treePermission" tree-value-id="permissionIds"></ztree>
+	</form>
+</div>
+<script type="text/javascript">
+	$(function() {
+		new VueBase({
+		    el: '#updateRoleApp',
+		    data: {
+		    	detailUrl: '../../../../background/module/sys_role/view/RoleDetailView.php',
+		        updateUrl: '../../../../background/module/sys_role/controller/UpdateRoleAction.php',
+
+		        listHtml: '../../../../foreground/module/sys_role/role.html',
+
+		        // 映射后台模块名称
+		        bean:'Role',
+		        entity: {
+	                code: '',
+	                name: '',
+	                permissionIds: ''
+	            },
+				// 返回信息
+            	respMsg: ''
+		    },
+		    created(){
+		    	this.queryLoad()
+		    },
+		    methods: {
+		    	// 查询需要被更新的对象数据
+		    	queryLoad: function() {
+		            var vm = this
+		            // 获取ID
+		            var id = location.href.split('#')[1]
+		            vm.$http.post(vm.detailUrl, {bean:'Role',id:id})
+		                .then((sucResp) => {
+		                	var respObj = ($.parseJSON($.trim(sucResp.data)))
+	                        vm.respMsg = respObj.respMsg
+	                        if(vm.respMsg == 'Y'){
+			                	// 绑定返回的实体对象
+			                    vm.entity = respObj
+			                    // 勾选权限树
+			                    vm.checkNode('treePermission')
+		                	}
+		                }, (errResp) => {
+		                	vm.respMsg = errResp.data
+		                });
+		        },
+		        // 更新前置操作
+	            beforeUpdate: function(){
+	                var vm = this
+	                vm.entity.permissionIds = $('#permissionIds').val()
+	            },
+	            // 更新后置操作
+	            afterUpdate: function(){
+	            	var vm = this
+	            	vm.showHtml(vm.listHtml)
+	            }
+		    }
+		});
+		// 额外加载权限树
+		$.fn.zTree.init($('#treePermission'), setting, zNodes);
+	});
+</script>

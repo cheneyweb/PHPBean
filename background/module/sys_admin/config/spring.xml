@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans>
+	<!-- 视图：用户 -->
+	<bean id="adminView" class="background/module/sys_admin/view/AdminView.php" />
+	<bean id="updateAdminView" class="background/module/sys_admin/view/UpdateAdminView.php" />
+	<!-- 用户管理 -->
+	<bean id="loginAction" class="background/module/sys_admin/controller/LoginAction.php" />
+	<bean id="loginService" class="background/module/sys_admin/service/LoginService.php" />
+	<bean id="adminValidate" class="background/module/sys_admin/validate/AdminValidate.php" />
+	<bean id="loginValidate" class="background/module/sys_admin/validate/LoginValidate.php" />
+	<bean id="addAdminAction" class="background/module/sys_admin/controller/AddAdminAction.php" />
+	<bean id="updateAdminAction" class="background/module/sys_admin/controller/UpdateAdminAction.php" />
+	<bean id="deleteAdminAction" class="background/module/sys_admin/controller/DeleteAdminAction.php" />
+
+	<bean id="adminService" class="background/module/sys_admin/service/AdminService.php" />
+	<bean id="adminDao" class="background/module/sys_admin/dao/AdminDao.php" />
+
+	<!-- 框架工具 -->
+	<bean id="struts" class="background/frame/struts/Struts.php" />
+	<bean id="validate" class="background/frame/security/Validate.php" />
+	<bean id="pDOUtil" class="background/frame/dao/pdo/PDOUtil.php" />
+	<bean id="smartyUtil" class="background/frame/smarty/SmartyUtil.php" />
+	<bean id="myBatis" class="background/frame/mybatis/MyBatis.php" />
+
+	<!-- 其他模块依赖 -->
+	<bean id="roleService" class="background/module/sys_role/service/RoleService.php" />
+	<bean id="roleDao" class="background/module/sys_role/dao/RoleDao.php" />
+
+	<!-- WebApi接口 -->
+	<bean id="loginApi" class="background/module/sys_admin/webapi/LoginApi.php" />
+</beans>

@@ -1,0 +1,64 @@
+<div id="addRoleApp">
+	<h2 class="sub-header">新增角色</h2>
+	<!-- 操作信息提示 -->
+    <respmsg :resp-msg="respMsg"></respmsg>
+	<!-- 新增表单 -->
+	<form class="form-horizontal" method="POST">
+		<div class="form-group">
+			<div class="col-sm-1">
+				<button type="button" class="btn btn-primary" @click="add(null)">保存</button>
+			</div>
+			<button type="button" class="btn btn-primary" @click="showHtml(listHtml)">取消</button>
+		</div>
+		<!-- Bean实体 -->
+		<div class="form-group">
+			<div class="col-sm-4">
+				<div class="input-group">
+					<div class="input-group-addon">角色编码</div>
+					<input type="text" class="form-control" v-model="entity.code"/>
+				</div>
+			</div>
+			<div class="col-sm-4">
+				<div class="input-group">
+					<div class="input-group-addon">角色名称</div>
+					<input type="text" class="form-control" v-model="entity.name"/>
+				</div>
+			</div>
+		</div>
+		<ztree tree-name="权限管理" tree-id="treePermission" tree-value-id="permissionIds"></ztree>
+	</form>
+</div>
+<script type="text/javascript">
+	$(function() {
+		new VueBase({
+		    el: '#addRoleApp',
+		    data: {
+		        addUrl: '../../../../background/module/sys_role/controller/AddRoleAction.php',
+
+		        listHtml: '../../../../foreground/module/sys_role/role.html',
+		        // 映射的后台模块名称
+            	bean:'Role',
+		        entity: {
+	                code: '',
+	                name: '',
+	                permissionIds: ''
+	            },
+	            // 返回信息
+            	respMsg: 'Y'
+		    },
+		    methods: {
+          		// 新增前设置权限树
+	            beforeAdd: function(){
+	                var vm = this
+	                vm.entity.permissionIds = $('#permissionIds').val()
+	            },
+	            afterAdd: function(){
+	            	var vm = this
+	            	vm.showHtml(vm.listHtml)
+	            }
+	        }
+		});
+		// 额外加载权限树
+		$.fn.zTree.init($('#treePermission'), setting, zNodes);
+	});
+</script>

@@ -1,0 +1,79 @@
+<div id="roleDetailApp">
+	<h2 class="sub-header">角色详情</h2>
+	<!-- 操作信息提示 -->
+    <respmsg :resp-msg="respMsg"></respmsg>
+	<div class="form-group">
+	    <button type="button" class="btn btn-primary" @click="showHtml(listHtml)">返回</button>
+	</div>
+	<table class="table table-bordered">
+	    <tr>
+	        <th class="col-sm-3">角色编码</th>
+	        <td>{{entity.code}}</td>
+	    </tr>
+	    <tr>
+	        <th class="col-sm-3">角色名称</th>
+	        <td>{{entity.name}}</td>
+	    </tr>
+	    <tr>
+	        <th class="col-sm-3">创建者</th>
+	        <td>{{entity.operatorCreate}}</td>
+	    </tr>
+	    <tr>
+	        <th class="col-sm-3">创建日期</th>
+	        <td>{{entity.datetimeCreate}}</td>
+	    </tr>
+	    <tr>
+	        <th class="col-sm-3">修改者</th>
+	        <td>{{entity.operatorModify}}</td>
+	    </tr>
+	    <tr>
+	        <th class="col-sm-3">修改日期</th>
+	        <td>{{entity.datetimeModify}}</td>
+	    </tr>
+	</table>
+	<ztree tree-name="权限管理" tree-id="detailTreePermission" tree-value-id="permissionIds"></ztree>
+</div>
+<script type="text/javascript">
+	$(function() {
+		new VueBase({
+		    el: '#roleDetailApp',
+		    data: {
+		        detailUrl: '../../../../background/module/sys_role/view/RoleDetailView.php',
+
+		        listHtml: '../../../../foreground/module/sys_role/role.html',
+
+		        entity:{},
+		        respMsg: ''
+		    },
+		    created() {
+	            this.queryLoad()
+	        },
+		    methods: {
+		        queryLoad: function() {
+		            var vm = this
+		            // 获取ID
+		            var id = location.href.split('#')[1]
+		            if(id != null && id != ''){
+			            vm.$http.post(vm.detailUrl, {bean:'Role',id:id})
+			                .then((sucResp) => {
+			                	var respObj = ($.parseJSON($.trim(sucResp.data)))
+		                        vm.respMsg = respObj.respMsg
+		                        if(vm.respMsg == 'Y'){
+				                	// 绑定返回的实体对象
+				                    vm.entity = respObj
+				                    // 勾选权限树
+				                    vm.checkNode('detailTreePermission')
+				                }
+			                }, (errResp) => {
+			                	vm.respMsg = errResp.data
+			                });
+		            }else{
+		            	vm.respMsg = '详情入参ID不能为空'
+		            }
+		        }
+		    }
+		});
+		// 额外加载权限树
+		$.fn.zTree.init($('#detailTreePermission'), setting, zNodes)
+	});
+</script>

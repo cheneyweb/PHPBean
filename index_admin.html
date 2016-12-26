@@ -1,0 +1,132 @@
+﻿<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>PHPBean 管理系统</title>
+    <!-- Bootstrap 核心 CSS 文件 -->
+    <link rel="stylesheet" href="foreground/frame/bootstrap3/css/bootstrap.min.css">
+    <!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
+    <script src="foreground/frame/jquery/jquery-2.0.3.min.js"></script>
+    <!-- Bootstrap 核心 JS 文件 -->
+    <script src="foreground/frame/bootstrap3/js/bootstrap.min.js"></script>
+    <!-- Vue框架 -->
+    <script src="foreground/frame/vue/vue.js"></script>
+    <script src="foreground/frame/vue/vue-resource.js"></script>
+    <style>
+    .main .page-header {
+        margin-top: 0;
+    }
+
+    body {
+        padding-top: 40px;
+        padding-bottom: 40px;
+        background-color: #eee;
+    }
+
+    .form-signin {
+        max-width: 330px;
+        padding: 15px;
+        margin: 0 auto;
+    }
+
+    .form-signin .form-signin-heading,
+    .form-signin .checkbox {
+        margin-bottom: 10px;
+    }
+
+    .form-signin .checkbox {
+        font-weight: normal;
+    }
+
+    .form-signin .form-control {
+        position: relative;
+        height: auto;
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+        padding: 10px;
+        font-size: 16px;
+    }
+
+    .form-signin .form-control:focus {
+        z-index: 2;
+    }
+
+    .form-signin input[type="email"] {
+        margin-bottom: -1px;
+        border-bottom-right-radius: 0;
+        border-bottom-left-radius: 0;
+    }
+
+    .form-signin input[type="password"] {
+        margin-bottom: 10px;
+        border-top-left-radius: 0;
+        border-top-right-radius: 0;
+    }
+    </style>
+</head>
+
+<body>
+    <div id="regApp" class="container">
+        <form class="form-signin" method="post">
+            <!--此隐藏域为必须，属性必须为“bean”-->
+            <input type=hidden v-model="admin.bean" />
+            <h2 class="form-signin-heading">&nbsp;&nbsp;&nbsp;PHPBean 管理系统</h2>
+            <input type="text" class="form-control" placeholder="帐号" required autofocus v-model="admin.account" />
+            <input type="password" class="form-control" placeholder="密码" required v-model="admin.password" />
+            <div class="row">
+                <div class="col-xs-8">
+                    <input type="text" class="form-control" placeholder="输入右边图片内容" required v-model="admin.captcha" />
+                </div>
+                <img style="margin-top: 5px" id="captcha" class="img-rounded" src="/background/frame/util/captcha.php" alt="看不清楚，换一张" style="cursor: pointer; vertical-align:middle;" @click="createCaptcha" />
+            </div>
+            <br/>
+            <!-- <div class="checkbox">
+				<label> <input type="checkbox" value="remember-me"/> 记住我 </label>
+			</div> -->
+            <button class="btn btn-lg btn-primary btn-block" type="button" @click="login">登录</button>
+            <span id="msg" class="label label-danger">{{ msg }}</span>
+        </form>
+    </div>
+    <!-- /regApp -->
+</body>
+
+</html>
+<script type="text/javascript">
+Vue.http.options.emulateJSON = true;
+var app = new Vue({
+    el: '#regApp',
+    data: {
+        apiUrl: '/background/module/sys_admin/controller/LoginAction.php',
+        admin: {
+            bean: 'Admin',
+            account: '',
+            password: '',
+            captcha: ''
+        },
+        msg: ''
+    },
+    methods: {
+        login: function() {
+            var vm = this
+            vm.msg = ''
+            vm.$http.post(vm.apiUrl, vm.admin)
+                .then((successResponse) => {
+                    resp = successResponse.data.replace(/\s/g, '')
+                    if (resp == 'Y') {
+                        window.location.href = 'background/module/sys_module_manager/view/SystemWelcomeView.php';
+                    } else {
+                        vm.msg = resp
+                    }
+                }, (errorResponse) => {
+                    vm.createCaptcha()
+                    vm.msg = '登录失败'
+                });
+
+        },
+        createCaptcha: function() {
+            $('#captcha').attr('src', '/background/frame/util/captcha.php?' + Math.random() * 10000);
+        }
+    }
+});
+</script>
