@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<beans>
-	<!-- 插件 -->
-	<bean id="_examplePlugin" class="background/module/__example/plugin/_ExamplePlugin.php" />
-	
-	<!-- 框架工具 -->
-	<bean id="pDOUtil" class="background/frame/dao/pdo/PDOUtil.php" />
-	<bean id="myBatis" class="background/frame/mybatis/MyBatis.php" />
-</beans>
