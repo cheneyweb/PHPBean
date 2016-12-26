@@ -27,21 +27,38 @@
 		表名：下划线，全小写
 		字段名：下划线，全小写
 	
-前后台交互API
+Vue基础组件-前后台交互API
 >
-	表单行为：
-		// AJAX异步提交表单（刷新当前页面）[表单ID，模块名，Action名，弹窗ID]
-		formModuleActionModal(formId,moduleName,actionName,modalId,ycallback,ncallback)
-		// AJAX异步提交表单(跳转新页面)[表单ID，模块名，Action名，View名，是否需确认]
-		formModuleActionView(formId,moduleName,actionName,viewName,isNeedConfirm)
-	弹窗行为：
-		// 显示编辑弹出框（弹窗编辑Bean对象）[弹窗ID，模块名，Action名，项目ID]
-		updateModal(modalId,moduleName,actionName,itemId,ycallback,ncallback)
-		// 展示弹出框[弹窗ID，模块名，View名]
-		showModal(modalId,moduleName,viewName,obj)
-		// 展示详情弹出框（弹窗快速展示详情信息）[弹窗ID，模块名，View名，项目ID]
-		showDetailModal(modalId,moduleName,viewName,itemId,ycallback)
-
+	交互行为：
+		// 查询加载列表
+		beforeQuery
+		afterQuery
+		queryLoad
+		// 新增数据
+		beforeAdd
+		afterAdd
+		add
+		// 更新弹窗
+		beforeUpdateModal
+		afterUpdateModal
+		updateModal
+		// 更新数据
+		beforeUpdate
+		afterUpdate
+		update
+		// 显示弹窗
+		beforeShowModal
+		afterShowModal
+		showModal
+		// 删除数据
+		deleteByIds
+	通用方法：
+		// 勾选数据
+		checkAll
+		// 勾选Z树节点
+		checkNode
+		// 显示HTML页面
+		showHtml
 状态机API
 >
 	配置状态机XML：
@@ -98,7 +115,7 @@ Action层API
 	
 框架层次
 >
-	视图层——如果使用foreground-mvvm则结合Vue可搭建完美MVVM前后端分离；如果使用foreground则结合Smarty后端渲染,唯一需要注意的是交互表单的属性有些许特殊要求（例如:表单需要添加隐藏域）
+	视图层——结合Vue可搭建完美MVVM前后端分离
 	控制层——这一层负责传输数据
 	插件层——这一层与业务层同级,用于处理复杂多状态流转业务
 	业务层——这一层负责业务处理
@@ -107,11 +124,11 @@ Action层API
 后台
 >
 	全Spring化,对象实例化全部使用配置
-	已实现数据库层封装,与struts对接,可自动将表单转为对象,再存入数据库相应表
-	完善的dao层封装,增删改查等基础查询操作完全不再需要编写SQL
-	实现Mybatis!可以自定义SQL,现在您可以在PHP上体验Mybatis的超灵活DAO开发
+	已实现传输对象封装,与Struts对接,可自动将表单转为对象,再存入数据库相应表
+	完善的Dao层封装,增删改查等基础查询操作完全不再需要编写SQL
+	实现Mybatis!可以自定义SQL,现在可以在PHP上体验Mybatis的超灵活DAO开发
 	安全模块已经实现正则表达式校验封装
-	集成smarty3.1.4,现在可以实现前端代码与样式的彻底分离了
+	集成smarty3.1.4,基础框架页面使用后端渲染，安全而不失高效
 
 前端
 >
@@ -119,7 +136,7 @@ Action层API
 	集成bootstrap3
 	集成jquery2.0.3,不支持IE6,7,8
 	集成ztree3.5.24
-	实现JS封装,目前已经封装异步表单提交,异步页面加载
+	实现JS组件封装,目前已基本实现前后台逻辑交互
     frame文件夹放置目前成熟流行的前端框架
     custom文件夹可以放定制性的前端CSS或JS代码
     module文件夹放置模块的前端HTML代码
@@ -177,10 +194,7 @@ Action层API
         custom——定制css和js
         	css——定制css
         	js——定制js
-        		vue
-        			vue_base.js(组件基类)
         		query
-        			query.js(查询行为)
         			show.js(页面行为)
         			vue_query_page.js(封装ztree的vue组件)
         		runtime_validator
@@ -188,6 +202,12 @@ Action层API
         		tree
         			tree_permission.js(权限树)
         			vue_ztree.js(封装ztree的vue树组件)
+        		vue
+        			vue_base.js(组件基类)
+        			vue_modal.js(弹窗组件)
+        			vue_query_page.js(分页组件)
+        			vue_respmsg.js(提示组件)
+        			vue_ztree.js(Z树组件)
         module——模块根目录
         	layout——布局模版
 				common——通用模版
@@ -197,7 +217,6 @@ Action层API
 				left_system.html——系统管理左侧菜单
         	sys_admin——系统用户模块
 			sys_module_manager——模块管理
-			sys_query——分页查询控件
 			sys_role——系统角色模块
 	log——系统LOG
     shell——SQL备份
@@ -209,6 +228,6 @@ Action层API
 
 更新日志
 >
-	2016.12.19:全新MVVM+MVC架构
+	2016.12.26:全新MVVM+MVC架构
 	
 	后续有待实现:全局系统配置，全局审核流
