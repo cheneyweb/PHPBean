@@ -1,16 +1,11 @@
 var VueBase = Vue.extend({
     methods: {
             /**
-             * [查询前置操作（可重写）]
+             * 通用查询操作方法集
+             * beforeQuery和afterQuery提供重写拓展
              */
             beforeQuery: function(){},
-            /**
-             * [查询后置操作（可重写）]
-             */
-            afterQuery: function(sucResp){},
-            /**
-             * [通用列表查询]
-             */
+            afterQuery: function(respObj){},
             queryLoad: function() {
                 var vm = this
                 // 设置query.bean和query.id,以便查询
@@ -29,7 +24,7 @@ var VueBase = Vue.extend({
                             // 获取返回查询条件
                             vm.query =  respObj.query
                             // =====查询后置操作=====
-                            vm.afterQuery(sucResp)
+                            vm.afterQuery(respObj)
                         }
                     }, (errResp) => {
                         vm.respMsg = errResp.data

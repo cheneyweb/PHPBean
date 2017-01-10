@@ -1,7 +1,7 @@
 <?php
-/** 
- * vCode(m,n,x,y) m个数字  显示大小为n   边宽x   边高y 
- * cheney 
+/**
+ * vCode(m,n,x,y) m个数字  显示大小为n   边宽x   边高y
+ * cheney
  */
 vCode ( 4, 24 ); // 4个字符，显示大小为24
 function vCode($num = 4, $size = 20, $width = 0, $height = 0) {
@@ -39,8 +39,8 @@ function vCode($num = 4, $size = 20, $width = 0, $height = 0) {
 	// 画验证码
 	@imagefttext ( $im, $size, 0, 5, $size + 3, $text_color, './simsun.ttc', $code );
 	// 输出验证码
-	header ( "Cache-Control: max-age=1, s-maxage=1, no-cache, must-revalidate" );
-	header ( "Content-type: image/png;charset=utf8" );
+	//header ( "Cache-Control: max-age=1, s-maxage=1, no-cache, must-revalidate" );
+	//header ( "Content-type: image/png;charset=utf8" );
 	imagepng ( $im );
 	imagedestroy ( $im );
 }

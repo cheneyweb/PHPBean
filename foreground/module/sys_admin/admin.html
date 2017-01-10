@@ -150,10 +150,10 @@ $(function() {
             this.queryLoad()
         },
         methods: {
-        	afterQuery: function(resp) {
+        	afterQuery: function(respObj) {
                 var vm = this
                 // 获取返回的角色列表
-                vm.roleList = ($.parseJSON($.trim(resp.data))).roles
+                vm.roleList = respObj.roles
             }
         }
     });
