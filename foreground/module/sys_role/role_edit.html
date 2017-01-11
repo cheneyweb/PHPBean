@@ -76,7 +76,7 @@
 	                vm.entity.permissionIds = $('#permissionIds').val()
 	            },
 	            // 更新后置操作
-	            afterUpdate: function(){
+	            afterUpdate: function(respObj,modalId){
 	            	var vm = this
 	            	vm.showHtml(vm.listHtml)
 	            }

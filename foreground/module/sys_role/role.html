@@ -175,10 +175,19 @@ $(function() {
                 vm.entity.permissionIds = $('#permissionIds').val()
             },
             // 后置更新弹窗勾选权限树
-            afterUpdateModal: function(){
+            afterUpdateModal: function(respObj,modalId){
                 var vm = this
-                // 权限树自动勾选
+                // 获取详情数据
+                vm.entity = respObj
+                // 更换提交按钮
+                $('#updateBtn').show()
+                $('#addBtn').hide()
+                // 修改主题文字
+                $('#addModalLabel').html($('#addModalLabel').html().replace('新增','编辑'))
+                // 权限树自动勾选--额外补充
                 vm.checkNode('treePermission')
+                // 显示更新弹窗
+                $('#' + modalId).modal()
             },
             // 更新前设置权限树的值
             beforeUpdate: function(){

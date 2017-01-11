@@ -25,11 +25,17 @@ var VueBase = Vue.extend({
                 return respObj;
             },
             /**
-             * 通用查询操作方法集
+             * [通用查询操作方法集]
              * beforeQuery和afterQuery提供重写拓展
              */
             beforeQuery: function(){},
-            afterQuery: function(respObj){},
+            afterQuery: function(respObj){
+                var vm = this
+                // 获取返回数据列表
+                vm.entityList = respObj.result
+                // 获取返回查询条件
+                vm.query =  respObj.query
+            },
             queryLoad: function() {
                 var vm = this
                 // =====1,查询初始化操作=====
@@ -41,12 +47,8 @@ var VueBase = Vue.extend({
                     .then((sucResp) => {
                         // =====3,接收数据操作=====
                         var respObj = vm.receiveData(sucResp)
+                        // =====4,查询后置操作=====
                         if(vm.respMsg == 'Y'){
-                            // 获取返回数据列表
-                            vm.entityList = respObj.result
-                            // 获取返回查询条件
-                            vm.query =  respObj.query
-                            // =====4,查询后置操作=====
                             vm.afterQuery(respObj)
                         }
                     }, (errResp) => {
@@ -59,7 +61,14 @@ var VueBase = Vue.extend({
              * @param modalId [弹窗ID]
              */
             beforeAdd: function(){},
-            afterAdd: function(){},
+            afterAdd: function(respObj,modalId){
+                var vm = this
+                // 隐藏弹窗，重新查询
+                if(modalId != null){
+                    $('#' + modalId).modal('hide')
+                    vm.queryLoad()
+                }
+            },
             add: function(modalId) {
                 var vm = this
                 // =====1,实体初始化操作=====
@@ -71,33 +80,33 @@ var VueBase = Vue.extend({
                     .then((sucResp) => {
                         // =====3,接收数据操作=====
                         var respObj = vm.receiveData(sucResp)
+                        // =====4,新增后置操作=====
                         if (vm.respMsg == 'Y') {
-                            // 隐藏弹窗，重新查询
-                            if(modalId != null){
-                                $('#' + modalId).modal('hide')
-                                vm.queryLoad()
-                            }
-                            // =====4,新增后置操作=====
-                            vm.afterAdd()
+                            vm.afterAdd(respObj,modalId)
                         }
                     }, (errResp) => {
                         vm.respMsg = errResp.data
                     });
             },
             /**
-             * [更新弹窗前置操作（可重写）]
-             */
-            beforeUpdateModal: function(){},
-            /**
-             * [更新弹窗后置操作（可重写）]
-             */
-            afterUpdateModal: function(){},
-            /**
              * [通用更新弹窗]
              * beforeUpdateModal和afterUpdateModal提供重写拓展
              * @param modalId [弹窗ID]
              * @param id [更新项ID]
              */
+            beforeUpdateModal: function(){},
+            afterUpdateModal: function(respObj,modalId){
+                var vm = this
+                // 获取详情数据
+                vm.entity = respObj
+                // 更换提交按钮
+                $('#updateBtn').show()
+                $('#addBtn').hide()
+                // 修改主题文字
+                $('#addModalLabel').html($('#addModalLabel').html().replace('新增','编辑'))
+                // 显示更新弹窗
+                $('#' + modalId).modal()
+            },
             updateModal: function(modalId,id) {
                 var vm = this
                 // =====1,查询初始化操作=====
@@ -109,18 +118,9 @@ var VueBase = Vue.extend({
                     .then((sucResp) => {
                         // =====3,接收数据操作=====
                         var respObj = vm.receiveData(sucResp)
+                        // =====4,更新弹窗后置操作=====
                         if(vm.respMsg == 'Y'){
-                            // 获取详情数据
-                            vm.entity = respObj
-                            // 更换提交按钮
-                            $('#updateBtn').show()
-                            $('#addBtn').hide()
-                            // 修改主题文字
-                            $('#addModalLabel').html($('#addModalLabel').html().replace('新增','编辑'))
-                            // =====4,更新弹窗后置操作=====
-                            vm.afterUpdateModal()
-                            // 显示更新弹窗
-                            $('#' + modalId).modal()
+                            vm.afterUpdateModal(respObj,modalId)
                         }
                     }, (errResp) => {
                         vm.respMsg = errResp.data
@@ -132,7 +132,14 @@ var VueBase = Vue.extend({
              * @param modalId [弹窗ID]
              */
             beforeUpdate: function(){},
-            afterUpdate: function(){},
+            afterUpdate: function(respObj,modalId){
+                var vm = this
+                // 隐藏弹窗，重新查询
+                if(modalId != null){
+                    $('#' + modalId).modal('hide');
+                    vm.queryLoad()
+                }
+            },
             update: function(modalId) {
                 var vm = this
                 // =====1,实体初始化操作=====
@@ -144,14 +151,9 @@ var VueBase = Vue.extend({
                     .then((sucResp) => {
                         // =====3,接收数据操作=====
                         var respObj = vm.receiveData(sucResp)
+                        // =====4,更新后置操作=====
                         if(vm.respMsg == 'Y'){
-                            // 隐藏弹窗，重新查询
-                            if(modalId != null){
-                                $('#' + modalId).modal('hide');
-                                vm.queryLoad()
-                            }
-                            // =====4,更新后置操作=====
-                            vm.afterUpdate()
+                            vm.afterUpdate(respObj,modalId)
                         }
                     }, (errResp) => {
                         vm.respMsg = errResp.data
@@ -240,21 +242,11 @@ var VueBase = Vue.extend({
              * @param id      [更新项ID]
              * @param event   [触发事件]
              */
-            beforeShowModal: function(){},
-            afterShowModal: function(){},
-            showModal: function(modalId,htmlUrl,id,event) {
-                var vm = this
-                // =====1,查询初始化操作=====
-                vm.initQuery(id)
-
+            beforeShowModal: function(modalId,id,event){
                 // 设置跳转参数
                 if(event != null){
                     event.target.href = event.target.href.split('#')[0] + '#' + id
                 }
-
-                // =====2,显示弹窗前置操作=====
-                vm.beforeShowModal()
-
                 // 清空其他的弹窗div的内容
                 $('div[id$="Content"]').each(function(){
                     if($(this).attr('id') != modalId+'Content'){
@@ -263,18 +255,27 @@ var VueBase = Vue.extend({
                 });
                 // 隐藏详情弹出框
                 $('#'+modalId).modal('hide');
+            },
+            afterShowModal: function(modalId){
+                // 去掉返回按钮
+                $('#'+modalId+'Content').find("button:contains('返回')").remove();
+                // 去掉标题
+                $('#'+modalId+'Content' + ' .sub-header').remove();
+                // 显示详情弹出框
+                $('#'+modalId).modal('show');
+            },
+            showModal: function(modalId,htmlUrl,id,event) {
+                var vm = this
+                // =====1,查询初始化操作=====
+                vm.initQuery(id)
+                // =====2,显示弹窗前置操作=====
+                vm.beforeShowModal(modalId,id,event)
+
                 // 获取详情页面，并对其修饰
+                // =====3,显示弹窗后置操作=====
                 $('#'+modalId+'Content').load(htmlUrl,{'bean':vm.bean,'id':id},function(){
-                    $('#'+modalId+'Content').find("button:contains('返回')").remove();// 去掉返回按钮
-                    $('#'+modalId+'Content' + ' .sub-header').remove();// 去掉标题
-
-                    // =====4,显示弹窗后置操作=====
-                    vm.afterShowModal()
-
-                    // 显示详情弹出框
-                    $('#'+modalId).modal('show');
+                    vm.afterShowModal(modalId)
                 });
-
             }
         }
 })

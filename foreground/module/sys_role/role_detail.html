@@ -56,8 +56,7 @@
 		            if(id != null && id != ''){
 			            vm.$http.post(vm.detailUrl, {bean:'Role',id:id})
 			                .then((sucResp) => {
-			                	var respObj = ($.parseJSON($.trim(sucResp.data)))
-		                        vm.respMsg = respObj.respMsg
+			                	var respObj = vm.receiveData(sucResp)
 		                        if(vm.respMsg == 'Y'){
 				                	// 绑定返回的实体对象
 				                    vm.entity = respObj

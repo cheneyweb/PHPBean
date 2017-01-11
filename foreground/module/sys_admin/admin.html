@@ -152,6 +152,10 @@ $(function() {
         methods: {
         	afterQuery: function(respObj) {
                 var vm = this
+                // 获取返回数据列表
+                vm.entityList = respObj.result
+                // 获取返回查询条件
+                vm.query =  respObj.query
                 // 获取返回的角色列表
                 vm.roleList = respObj.roles
             }

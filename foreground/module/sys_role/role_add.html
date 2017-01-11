@@ -52,7 +52,7 @@
 	                var vm = this
 	                vm.entity.permissionIds = $('#permissionIds').val()
 	            },
-	            afterAdd: function(){
+	            afterAdd: function(respObj,modalId){
 	            	var vm = this
 	            	vm.showHtml(vm.listHtml)
 	            }
