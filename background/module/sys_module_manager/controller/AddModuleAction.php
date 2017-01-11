@@ -37,7 +37,7 @@ class AddModuleAction {
 		// 生成SQL文件
 		self::createSQL ( $path, $exampleModulePrefix, $exampleModuleName, $tablePrefix, $tableName );
 		// 生成模块菜单链接
-		self::editUrlFile ( $path . '../../foreground/module/layout/left_module.html', $exampleModuleName, $tablePrefix, $tableName );
+		self::editUrlFile ( $path . '../../foreground/module/layout/common/left_module.html', $exampleModuleName, $tablePrefix, $tableName );
 		// 保存模块
 		$this->moduleManagerService->save ( $entity );
 

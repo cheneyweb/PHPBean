@@ -8,7 +8,7 @@ import ( "sys_module_manager", "systemWelcomeView" );
 class SystemWelcomeView {
 	// 需要注入的属性必须声明为public，且首字母为类名首字母小写
 	public $smartyUtil;
-	
+
 	// 执行体
 	public function execute() {
 		@session_start ();
@@ -16,7 +16,7 @@ class SystemWelcomeView {
 		if (! isEmpty ( $adminDetail )) {
 			$smarty = $this->smartyUtil->load ();
 			$smarty->assign ( 'admin', $adminDetail );
-			$smarty->display ( BASEURL . 'foreground/module/sys_module_manager/system_welcome.html' );
+			$smarty->display ( BASEURL . 'foreground/module/layout/layout_system.html' );
 		} else {
 			echo '非法登陆';
 		}

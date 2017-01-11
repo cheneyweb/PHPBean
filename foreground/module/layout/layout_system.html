@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<title>PHPBean 管理系统</title>
+	<{include file="./common/header.html"}>
+
+	<style>
+	body {
+		padding-top: 50px;
+	}
+	.main .page-header {
+		margin-top: 0;
+	}
+	.table{
+		font-size: 14px;
+	}
+
+  	.sidebar {
+    position: fixed;
+    top: 50px;
+    bottom: 0;
+    left: 0;
+    display: block;
+    overflow-x: hidden;
+    overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
+    }
+
+	.main {
+	bottom: 0;
+	left: 250px;
+	overflow-x: hidden;
+	overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
+	}
+
+	.main .page-header {
+	  margin-top: 0;
+	}
+	</style>
+
+</head>
+<body>
+<{include file="./common/nav.html"}>
+<{include file="./common/left_system.html"}>
+</body>
+</html>

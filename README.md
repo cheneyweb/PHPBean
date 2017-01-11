@@ -213,8 +213,10 @@ Action层API
 				common——通用模版
 					header.html——HTML头文件
 					nav.html——顶部导航
-				left_module.html——模块管理左侧菜单
-				left_system.html——系统管理左侧菜单
+					left_module.html——模块管理左侧菜单
+					left_system.html——系统管理左侧菜单
+				layout_module.html——模块管理首页布局
+				layout_system.html——系统管理首页布局
         	sys_admin——系统用户模块
 			sys_module_manager——模块管理
 			sys_role——系统角色模块
@@ -229,5 +231,5 @@ Action层API
 更新日志
 >
 	2016.12.26:全新MVVM+MVC架构
-	
+	2017.01.11:更新首页布局模式,由原先的从里往外改为从外往里
 	后续有待实现:全局系统配置，全局审核流

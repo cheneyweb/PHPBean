@@ -1,0 +1,16 @@
+<div class="container-fluid">
+	<div class="col-md-2 sidebar">
+		<ul class="nav nav-sidebar">
+			<{if <{hasPermission code="SYSTEM"}> }>
+			<li><a data-toggle="collapse" href="#module">模块管理</a></li>
+			<ul id="module" class="collapse">
+				<li><a href="javascript:showHtml('sys_module_manager','module_manager.html')">模块管理</a></li>
+				<!-- $_moduleUrl -->
+			</ul>
+			<{/if}>
+		</ul>
+	</div>
+	<div id="content" class="col-md-10 main" style="margin-top:0px;margin-left:-60px;">
+	<{include file="../../sys_module_manager/module_welcome.html"}>
+	</div>
+</div>
