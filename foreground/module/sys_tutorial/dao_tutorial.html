@@ -25,95 +25,110 @@
         <div class="page-header">
             <h1>Dao使用指南</h1>
         </div>
-        <p class="lead">Struts封装实现了将视图层的<code>对象数据</code>传输到后台，在MVVM框架的设计中，由相关JS框架传输对象数据(PHPBean使用Vue)</p>
+        <p class="lead">PHPBean的Dao层封装借鉴了Mybatis的思想，而且更加纯粹地使用<code>实体对象</code>作为存储单位</p>
 
-        <blockquote>1、使用Vue将entity对象传输至后台,需要注意的是,在Vue的data中,需要额外增加<code>bean</code>名称，其对应的是后台的模块名称</blockquote>
-        <pre>data:{bean:'ModuleName',entity:{}}</pre>
-
-        <blockquote>2、定义Entity对象，在<code>module/prefix_module_name/entity/</code>路径下生成ModuleName.php文件</blockquote>
+        <blockquote>1、使用<code>PDOUtil.php</code>，这是框架系统封装好的CRUD方法，实现了最基础的单对象增删改查</blockquote>
 <pre>
-include_once BASEURL . 'background/module/sys_query/entity/Query.php';
-/**
- * 实体对象(实体bean属性需要全部为public)
- * @author CheneyXu
- *
- */
-class ModuleName extends Query{
-    private static $tablePrefix='tmp';// 实体表前缀
-    public static function getTablePrefix(){return self::$tablePrefix;}
-    public $id;
-    public $code;
-    public $name;
-    public $operatorCreate;
-    public $datetimeCreate;
-    public $operatorModify;
-    public $datetimeModify;
-}
-</pre>
+class BaseService {
+    public $pDOUtil;
 
-        <blockquote>3、将entity对象传输至后台使用Struts接收<code>POST</code>数据，并且会自动转换成PHP对象</blockquote>
-        <pre><code>$entity = $this->struts->genEntity ();</code></pre>
+    /**
+     * 查询数据Obj数组
+     *
+     * @param 实体对象 $entity
+     * @return arr[obj] (查询不到时返回null)
+     */
+    public function queryArr($entity) {
+        $result = $this->pDOUtil->queryArr ( $entity );
+        return $result;
+    }
 
-        <blockquote>一个完整保存前台传入对象数据的例子如下</blockquote>
-<pre>
-$(function() {
-    Vue.http.options.emulateJSON = true;
-    new VueBase({
-        el: '#permissionApp',
-        data: {
-            addUrl: '../../../../background/module/tmp_permission/controller/AddPermissionAction.php',
-            // 映射的后台模块名称
-            bean:'Permission',
-            // 实体对象
-            entity: {},
-            // 返回信息
-            respMsg: ''
-        },
-        created() {
-            this.queryLoad()
-        },
-        methods: {
+    /**
+     * 查询单个数据Obj
+     *
+     * @param 实体对象 $entity
+     * @return obj(查询不到时返回null)
+     */
+    public function queryObj($entity) {
+        $result = $this->pDOUtil->queryObj ( $entity );
+        return $result;
+    }
+
+    /**
+     * 插入单个数据对象
+     * @param 实体对象 $entity
+     * @return boolean
+     */
+    public function insert($entity) {
+        $this->pDOUtil->insert ( $entity );
+        // 结果判断
+        if (empty ( $entity->id )) {
+            return false;
         }
-    });
-});
-</pre>
-<pre>
-/* 定义基础路径和导入基础包，基础包内置Spring工厂的初始化，以及模块spring.xml文件的载入 */
-define ( 'BASEURL', '../../../../' );
-include_once BASEURL . 'background/frame/util/package.php';
+        return true;
+    }
 
-// 根路径，模块名称，Action名称
-import ( 'tmp_permission', 'addPermissionAction' );
+    /**
+     * 删除单个数据对象
+     *
+     * @param 实体对象 $entity
+     * @return boolean
+     */
+    public function delete($entity) {
+        $this->pDOUtil->delete ( $entity );
+        return true;
+    }
 
-/**
- * 新增Action
- *
- * @author CheneyXu
- *
- */
-class AddPermissionAction {
-    public $struts;
-    public $permissionService;
-    public $permissionValidate;
-
-    // 执行体
-    public function execute() {
-        // 入参对象
-        $entity = $this->struts->genEntity ();
-        // 入参校验
-        $checkResult = $this->permissionValidate->checkEntity ( $entity );
-        if ($checkResult['respMsg'] != 'Y') {
-            echo json_encode ( $checkResult, JSON_UNESCAPED_UNICODE );
-            return;
-        }
-        // 保存
-        if (!$this->permissionService->insert ( $entity )) {
-            $checkResult['respMsg'] = '保存数据错误';
-        }
-        echo json_encode ( $checkResult, JSON_UNESCAPED_UNICODE );
+    /**
+     * 更新
+     *
+     * @param 实体对象 $entity
+     * @return boolean
+     */
+    public function update($entity) {
+        $this->pDOUtil->update ( $entity, null );
+        return true;
     }
 }
 </pre>
+
+        <blockquote>2、自定义Dao接口，使用<code>ModuleDao_SQL.xml</code>文件自定义SQL操作</blockquote>
+<pre>
+class AdminDao{
+    public $myBatis;
+
+    public function queryPage($obj){
+        return $this->myBatis->queryPage(__METHOD__,$obj);
+    }
+
+    public function queryPageCount($obj){
+        return $this->myBatis->queryPageCount(__METHOD__,$obj);
+    }
+
+    public function queryAdmin($obj){
+        return $this->myBatis->queryObjByObj(__METHOD__,$obj);
+    }
+
+    public function queryAdminByNameAndPassword($name,$password){
+        $obj = $this->myBatis->queryObjByVars(__METHOD__,$name,$password);
+        return $obj;
+    }
+
+    public function queryAdminArr($obj){
+        $obj = $this->myBatis->queryObjArrByObj(__METHOD__,$obj);
+        return $obj;
+    }
+
+    public function queryAdminArrByName($name){
+        $obj = $this->myBatis->queryObjArrByVars(__METHOD__,$name);
+        return $obj;
+    }
+}
+</pre>
+
+        <blockquote>3、<code>ModuleDao_SQL.xml</code>文件内使用id映射Dao接口的方法名，执行对应SQL，其中<code>&lt;include&gt;</code>标签可以嵌套</blockquote>
+<pre></pre>
+
         <p>返回 <a href="/index.html">首页</a></p>
         <hr>
         <footer>

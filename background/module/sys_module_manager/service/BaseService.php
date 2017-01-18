@@ -5,8 +5,8 @@ class BaseService {
 	/**
 	 * 查询数据Obj数组
 	 *
-	 * @param unknown $entity
-	 * @return unknown(查询不到时返回null)
+	 * @param 实体对象 $entity
+	 * @return arr[obj] (查询不到时返回null)
 	 */
 	public function queryArr($entity) {
 		$result = $this->pDOUtil->queryArr ( $entity );
@@ -16,7 +16,7 @@ class BaseService {
 	/**
 	 * 查询单个数据Obj
 	 *
-	 * @param 实体 $entity
+	 * @param 实体对象 $entity
 	 * @return obj(查询不到时返回null)
 	 */
 	public function queryObj($entity) {
@@ -26,7 +26,7 @@ class BaseService {
 
 	/**
 	 * 插入单个数据对象
-	 * @param unknown $entity
+	 * @param 实体对象 $entity
 	 * @return boolean
 	 */
 	public function insert($entity) {
@@ -41,7 +41,7 @@ class BaseService {
 	/**
 	 * 删除单个数据对象
 	 *
-	 * @param unknown $entity
+	 * @param 实体对象 $entity
 	 * @return boolean
 	 */
 	public function delete($entity) {
@@ -52,7 +52,7 @@ class BaseService {
 	/**
 	 * 更新
 	 *
-	 * @param unknown $entity
+	 * @param 实体对象 $entity
 	 * @return boolean
 	 */
 	public function update($entity) {

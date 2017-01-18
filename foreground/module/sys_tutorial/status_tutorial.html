@@ -25,95 +25,28 @@
         <div class="page-header">
             <h1>状态机使用指南</h1>
         </div>
-        <p class="lead">Struts封装实现了将视图层的<code>对象数据</code>传输到后台，在MVVM框架的设计中，由相关JS框架传输对象数据(PHPBean使用Vue)</p>
+        <p class="lead">状态机是一系列的状态流转和动作执行的引擎，用以在复杂业务逻辑的操作时替代Service，在PHPBean中使用状态机是极其简单的</p>
 
-        <blockquote>1、使用Vue将entity对象传输至后台,需要注意的是,在Vue的data中,需要额外增加<code>bean</code>名称，其对应的是后台的模块名称</blockquote>
-        <pre>data:{bean:'ModuleName',entity:{}}</pre>
-
-        <blockquote>2、定义Entity对象，在<code>module/prefix_module_name/entity/</code>路径下生成ModuleName.php文件</blockquote>
+        <blockquote>1、配置module/sys_module_manager/config/status.xml下的状态机文件</blockquote>
 <pre>
-include_once BASEURL . 'background/module/sys_query/entity/Query.php';
-/**
- * 实体对象(实体bean属性需要全部为public)
- * @author CheneyXu
- *
- */
-class ModuleName extends Query{
-    private static $tablePrefix='tmp';// 实体表前缀
-    public static function getTablePrefix(){return self::$tablePrefix;}
-    public $id;
-    public $code;
-    public $name;
-    public $operatorCreate;
-    public $datetimeCreate;
-    public $operatorModify;
-    public $datetimeModify;
-}
+    statusMap标签下包含了多个module，每个module的name属性对呀module的文件夹名称，entity属性对呀module的实体类名称；
+    status标签包含多个operate，status的pre属性是前置状态，name属性是状态名；
+    operate标签内容映射module/prefix_module_name/plugin/路径下插件类
+    每个状态被执行时，其下的所有插件会被依次执行，前一个插件的出参会作为下一个插件的入参
+</pre>
+        <blockquote>2、导入状态机</blockquote>
+<pre>
+include_once BASEURL . 'background/module/module_manager/controller/StatusEngine.php'
+</pre>
+        <blockquote>3、校验状态，<code>$entity->status</code>中设置下一个状态，其余属性设置查询条件，前置状态包含当前查询状态，则校验通过</blockquote>
+<pre>
+$checkResult = StatusEngine::checkStatus ( $entity )
+</pre>
+        <blockquote>4、状态变更，<code>$entity->status</code>中设置下一个状态，<code>$entity->id</code>中设置数据对象id</blockquote>
+<pre>
+$changeResult = StatusEngine::changeStatus ( $inparam, $entity )
 </pre>
 
-        <blockquote>3、将entity对象传输至后台使用Struts接收<code>POST</code>数据，并且会自动转换成PHP对象</blockquote>
-        <pre><code>$entity = $this->struts->genEntity ();</code></pre>
-
-        <blockquote>一个完整保存前台传入对象数据的例子如下</blockquote>
-<pre>
-$(function() {
-    Vue.http.options.emulateJSON = true;
-    new VueBase({
-        el: '#permissionApp',
-        data: {
-            addUrl: '../../../../background/module/tmp_permission/controller/AddPermissionAction.php',
-            // 映射的后台模块名称
-            bean:'Permission',
-            // 实体对象
-            entity: {},
-            // 返回信息
-            respMsg: ''
-        },
-        created() {
-            this.queryLoad()
-        },
-        methods: {
-        }
-    });
-});
-</pre>
-<pre>
-/* 定义基础路径和导入基础包，基础包内置Spring工厂的初始化，以及模块spring.xml文件的载入 */
-define ( 'BASEURL', '../../../../' );
-include_once BASEURL . 'background/frame/util/package.php';
-
-// 根路径，模块名称，Action名称
-import ( 'tmp_permission', 'addPermissionAction' );
-
-/**
- * 新增Action
- *
- * @author CheneyXu
- *
- */
-class AddPermissionAction {
-    public $struts;
-    public $permissionService;
-    public $permissionValidate;
-
-    // 执行体
-    public function execute() {
-        // 入参对象
-        $entity = $this->struts->genEntity ();
-        // 入参校验
-        $checkResult = $this->permissionValidate->checkEntity ( $entity );
-        if ($checkResult['respMsg'] != 'Y') {
-            echo json_encode ( $checkResult, JSON_UNESCAPED_UNICODE );
-            return;
-        }
-        // 保存
-        if (!$this->permissionService->insert ( $entity )) {
-            $checkResult['respMsg'] = '保存数据错误';
-        }
-        echo json_encode ( $checkResult, JSON_UNESCAPED_UNICODE );
-    }
-}
-</pre>
         <p>返回 <a href="/index.html">首页</a></p>
         <hr>
         <footer>

@@ -1,6 +1,9 @@
 # PHPBean
 整个框架划分两大部分——“前端”和“后台”,PHP的开发者们不需要再羡慕Java上的各种优秀的框架的便捷性了，在PHPBean这个框架中，前端使用Vue进行组件化构建，后端则尝试尽所有可能地把Java Web的开发思想引入PHP，主体思想为MVVM+MVC，包括struts,mybatis,spring的引入（使用PHP来实现），例如强制规范使用Bean作为数据传输单位，规范的文件夹分类和文件命名，状态机流程引入。这个框架的开发灵感来源于Magento框架和Java的多种开源框架，在他们的基础上加以理解和重组。
 
+项目预览(Project Preview):
+	[演示链接->http://phpbean.duapp.com](http://phpbean.duapp.com) 
+
 使用说明
 >
 	1,数据库配置
@@ -68,7 +71,7 @@ Vue基础组件-前后台交互API
 	第一步：导入状态机
 		include_once BASEURL . 'background/module/module_manager/controller/StatusEngine.php'
 	第二步：校验状态（$entity->status中设置下一个状态，其余属性设置查询条件，前置状态包含当前查询状态，则校验通过）[需要查询状态的对象]
-		$checkResult = StatusEngine::changeStatus ( $entity )
+		$checkResult = StatusEngine::checkStatus ( $entity )
 	第三步：执行状态变更（$entity->status中设置下一个状态,$entity->id中设置数据对象id）[状态机插件传递参数,需要变更状态的对象]
 		$changeResult = StatusEngine::changeStatus ( $inparam, $entity )
 	
@@ -232,5 +235,5 @@ Action层API
 >
 	2016.12.26:全新MVVM+MVC架构
 	2017.01.11:更新首页布局模式,由原先的从里往外改为从外往里
-	2017.01.18:开始编写使用指南，Struts使用指南编写完成
+	2017.01.18:开始编写使用指南
 	后续有待实现:全局系统配置，全局审核流

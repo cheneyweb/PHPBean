@@ -25,94 +25,28 @@
         <div class="page-header">
             <h1>Vue组件使用指南</h1>
         </div>
-        <p class="lead">Struts封装实现了将视图层的<code>对象数据</code>传输到后台，在MVVM框架的设计中，由相关JS框架传输对象数据(PHPBean使用Vue)</p>
+        <p class="lead">PHPBean框架的前端部分封装了大量的Vue组件，使得在构建前端页面时，不必再重复造轮子，使用Vue的组件系统，快速开发</p>
 
-        <blockquote>1、使用Vue将entity对象传输至后台,需要注意的是,在Vue的data中,需要额外增加<code>bean</code>名称，其对应的是后台的模块名称</blockquote>
-        <pre>data:{bean:'ModuleName',entity:{}}</pre>
-
-        <blockquote>2、定义Entity对象，在<code>module/prefix_module_name/entity/</code>路径下生成ModuleName.php文件</blockquote>
+        <blockquote>1、vue_base.js，这不是Vue组件，而是PHPBean框架前端部分的Vue基类，封装了大量前后台交互API，继承其的Vue实例能快速实现前后台交互</blockquote>
 <pre>
-include_once BASEURL . 'background/module/sys_query/entity/Query.php';
-/**
- * 实体对象(实体bean属性需要全部为public)
- * @author CheneyXu
- *
- */
-class ModuleName extends Query{
-    private static $tablePrefix='tmp';// 实体表前缀
-    public static function getTablePrefix(){return self::$tablePrefix;}
-    public $id;
-    public $code;
-    public $name;
-    public $operatorCreate;
-    public $datetimeCreate;
-    public $operatorModify;
-    public $datetimeModify;
-}
+    new VueBase({})
+</pre>
+        <blockquote>2、vue_modal.js，弹窗组件，可以弹窗的形式展示指定HTML页面</blockquote>
+<pre>
+    &lt;modal modal-id="roleDetailModal" content-id="roleDetailModalContent" modal-name="角色详情"&gt;&lt;/modal&gt;
 </pre>
 
-        <blockquote>3、将entity对象传输至后台使用Struts接收<code>POST</code>数据，并且会自动转换成PHP对象</blockquote>
-        <pre><code>$entity = $this->struts->genEntity ();</code></pre>
-
-        <blockquote>一个完整保存前台传入对象数据的例子如下</blockquote>
+        <blockquote>3、vue_query_page.js，分页组件</blockquote>
 <pre>
-$(function() {
-    Vue.http.options.emulateJSON = true;
-    new VueBase({
-        el: '#permissionApp',
-        data: {
-            addUrl: '../../../../background/module/tmp_permission/controller/AddPermissionAction.php',
-            // 映射的后台模块名称
-            bean:'Permission',
-            // 实体对象
-            entity: {},
-            // 返回信息
-            respMsg: ''
-        },
-        created() {
-            this.queryLoad()
-        },
-        methods: {
-        }
-    });
-});
+    &lt;query-page :api-url="queryUrl" :query="query" :query-load="queryLoad"&gt;&lt;/query-page&gt;
 </pre>
+        <blockquote>4、vue_respmsg.js，消息提示组件</blockquote>
 <pre>
-/* 定义基础路径和导入基础包，基础包内置Spring工厂的初始化，以及模块spring.xml文件的载入 */
-define ( 'BASEURL', '../../../../' );
-include_once BASEURL . 'background/frame/util/package.php';
-
-// 根路径，模块名称，Action名称
-import ( 'tmp_permission', 'addPermissionAction' );
-
-/**
- * 新增Action
- *
- * @author CheneyXu
- *
- */
-class AddPermissionAction {
-    public $struts;
-    public $permissionService;
-    public $permissionValidate;
-
-    // 执行体
-    public function execute() {
-        // 入参对象
-        $entity = $this->struts->genEntity ();
-        // 入参校验
-        $checkResult = $this->permissionValidate->checkEntity ( $entity );
-        if ($checkResult['respMsg'] != 'Y') {
-            echo json_encode ( $checkResult, JSON_UNESCAPED_UNICODE );
-            return;
-        }
-        // 保存
-        if (!$this->permissionService->insert ( $entity )) {
-            $checkResult['respMsg'] = '保存数据错误';
-        }
-        echo json_encode ( $checkResult, JSON_UNESCAPED_UNICODE );
-    }
-}
+    &lt;respmsg :resp-msg="respMsg"&gt;&lt;/respmsg&gt;
+</pre>
+        <blockquote>5、vue_ztree.js，Z树组件</blockquote>
+<pre>
+    &lt;ztree tree-name="权限管理" tree-id="treePermission" tree-value-id="permissionIds"&gt;&lt;/ztree&gt;
 </pre>
         <p>返回 <a href="/index.html">首页</a></p>
         <hr>

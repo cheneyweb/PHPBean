@@ -25,92 +25,47 @@
         <div class="page-header">
             <h1>Spring使用指南</h1>
         </div>
-        <p class="lead">Struts封装实现了将视图层的<code>对象数据</code>传输到后台，在MVVM框架的设计中，由相关JS框架传输对象数据(PHPBean使用Vue)</p>
+        <p class="lead">在PHPBean中，实现了PHP语言版本的Spring，集中式管理所有对象的初始化</p>
 
-        <blockquote>1、使用Vue将entity对象传输至后台,需要注意的是,在Vue的data中,需要额外增加<code>bean</code>名称，其对应的是后台的模块名称</blockquote>
-        <pre>data:{bean:'ModuleName',entity:{}}</pre>
-
-        <blockquote>2、定义Entity对象，在<code>module/prefix_module_name/entity/</code>路径下生成ModuleName.php文件</blockquote>
+        <blockquote>1、定义对象，在<code>module/prefix_module_name/config/spring.xml</code>的XML文件内定义需要被初始化的类</blockquote>
 <pre>
-include_once BASEURL . 'background/module/sys_query/entity/Query.php';
-/**
- * 实体对象(实体bean属性需要全部为public)
- * @author CheneyXu
- *
- */
-class ModuleName extends Query{
-    private static $tablePrefix='tmp';// 实体表前缀
-    public static function getTablePrefix(){return self::$tablePrefix;}
-    public $id;
-    public $code;
-    public $name;
-    public $operatorCreate;
-    public $datetimeCreate;
-    public $operatorModify;
-    public $datetimeModify;
-}
+&lt;beans&gt;<br /> &lt;bean id="adminView" class="background/module/sys_admin/view/AdminView.php" /&gt;<br /> &lt;bean id="adminValidate" class="background/module/sys_admin/validate/AdminValidate.php" /&gt;<br /> &lt;bean id="adminService" class="background/module/sys_admin/service/AdminService.php" /&gt;<br /> &lt;bean id="struts" class="background/frame/struts/Struts.php" /&gt;<br />&lt;/beans&gt;<br />
 </pre>
 
-        <blockquote>3、将entity对象传输至后台使用Struts接收<code>POST</code>数据，并且会自动转换成PHP对象</blockquote>
-        <pre><code>$entity = $this->struts->genEntity ();</code></pre>
-
-        <blockquote>一个完整保存前台传入对象数据的例子如下</blockquote>
+        <blockquote>2、引入<code>package.php</code>，使用<code>import()</code>方法初始化所有对象，Spring工厂会自动初始化模块路径下spring.xml的所有对象，然后匹配初始化类内部的所有<code>public</code>属性，同理每个public属性的对象内的public属性会被递归初始化</blockquote>
+        <blockquote>3、Spring工厂执行完所有初始化工作后，会执行第一导入类对象的<code>execute()</code>方法</code></blockquote>
 <pre>
-$(function() {
-    Vue.http.options.emulateJSON = true;
-    new VueBase({
-        el: '#permissionApp',
-        data: {
-            addUrl: '../../../../background/module/tmp_permission/controller/AddPermissionAction.php',
-            // 映射的后台模块名称
-            bean:'Permission',
-            // 实体对象
-            entity: {},
-            // 返回信息
-            respMsg: ''
-        },
-        created() {
-            this.queryLoad()
-        },
-        methods: {
-        }
-    });
-});
-</pre>
-<pre>
-/* 定义基础路径和导入基础包，基础包内置Spring工厂的初始化，以及模块spring.xml文件的载入 */
+/* 定义基础路径和导入基础包，基础包内置spring.xml文件的载入，Spring工厂的初始化 */
 define ( 'BASEURL', '../../../../' );
 include_once BASEURL . 'background/frame/util/package.php';
 
-// 根路径，模块名称，Action名称
-import ( 'tmp_permission', 'addPermissionAction' );
+// 执行入口：导入当前类对象的初始化[模块文件夹名称，类实例对象名称]
+import ( 'sys_admin', 'adminView' );
 
 /**
- * 新增Action
- *
+ * AdminView的实例adminView会被自动初始化
  * @author CheneyXu
- *
+ *         Spring对象自动注入例子
  */
-class AddPermissionAction {
-    public $struts;
-    public $permissionService;
-    public $permissionValidate;
+class AdminView {
+    public $struts;         // struts在spring.xml中已经配置，会自动初始化
+    public $adminValidate;  // adminValidate在spring.xml中已经配置，会自动初始化
+    public $adminService;   // adminService在spring.xml中已经配置，会自动初始化
 
-    // 执行体
+    /**
+     * 执行体
+     */
     public function execute() {
-        // 入参对象
-        $entity = $this->struts->genEntity ();
-        // 入参校验
-        $checkResult = $this->permissionValidate->checkEntity ( $entity );
+        // 1、查询条件
+        $query = $this->struts->genEntity ();
+        // 2、入参校验
+        $checkResult = $this->adminValidate->checkQuery ( $query );
         if ($checkResult['respMsg'] != 'Y') {
             echo json_encode ( $checkResult, JSON_UNESCAPED_UNICODE );
             return;
         }
-        // 保存
-        if (!$this->permissionService->insert ( $entity )) {
-            $checkResult['respMsg'] = '保存数据错误';
-        }
-        echo json_encode ( $checkResult, JSON_UNESCAPED_UNICODE );
+        // 3、业务查询
+        $resp = $this->adminService->queryPage ( $query );
     }
 }
 </pre>
