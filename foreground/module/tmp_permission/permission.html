@@ -1,0 +1,145 @@
+<div id="permissionApp">
+	<h2 class="sub-header">Permission管理</h2>
+	<!-- 操作信息提示 -->
+	<respmsg :resp-msg="respMsg"></respmsg>
+	<!-- 查询表单 -->
+	<form class="form-horizontal" method="POST">
+		<div class="form-group">
+			<div class="col-sm-3">
+				<div class="input-group">
+					<div class="input-group-addon">编号</div>
+					<input type="text" class="form-control" v-model="query.code"/>
+				</div>
+			</div>
+			<div class="col-sm-3">
+				<div class="input-group">
+					<div class="input-group-addon">创建日期</div>
+					<input type="text" class="form-control datetimepicker" v-model="query.datetimeCreate"/>
+				</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="col-sm-1">
+				<button id="queryBtn" type="button" class="btn btn-default" @click="queryLoad">查询</button>
+			</div>
+			<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addModal">新增</button>
+			<button type="button" class="btn btn-primary" @click="showHtml(addHtml)">新增页面</button>
+			<button type="button" class="btn btn-danger" @click="deleteByIds">删除</button>
+		</div>
+	</form>
+	<table class="table table-bordered table-condensed">
+		<thead>
+			<tr>
+				<th><input type="checkbox" @click="checkAll"/></th>
+			<th>权限编码</th>
+			<th>权限名称</th>
+			<th>创建者</th>
+			<th>创建日期</th>
+			<th>修改者</th>
+			<th>修改日期</th>
+			<th>操作</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr v-for="item in entityList">
+				<td scope="row"><input type="checkbox" :value="item.id" v-model="ids"/></td>
+			<td>{{item.code}}</td>
+			<td>{{item.name}}</td>
+			<td>{{item.operator_create}}</td>
+			<td>{{item.datetime_create}}</td>
+			<td>{{item.operator_modify}}</td>
+			<td>{{item.datetime_modify}}</td>
+				<td>
+					<a href="#" @click="showHtml(detailHtml,item.id,$event)">详情页面</a> |
+                    <a href="#" @click="showHtml(editHtml,item.id,$event)">编辑页面</a> |
+                    <a href="#" @click="updateModal('addModal',item.id)">编辑</a>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+	<!-- 分页控件 -->
+	<query-page :api-url="queryUrl" :query="query" :query-load="queryLoad"></query-page>
+
+	<!-- Modal -->
+	<div id="addModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="addModalLabel">
+		<div class="modal-dialog modal-lg" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h4 class="modal-title" id="addModalLabel">新增Permission</h4>
+					<!-- 操作信息提示 -->
+                    <div class="alert alert-danger" v-show="respMsg != 'Y'">
+                        <strong>{{respMsg}}</strong>
+                    </div>
+				</div>
+				<div class="modal-body">
+					<form class="form-horizontal" method="POST">
+						<!-- Bean实体 -->
+						<div class="form-group">
+		<div class="col-sm-4">
+			<div class="input-group">
+				<div class="input-group-addon">权限编码</div>
+				<input type="text" class="form-control" v-model="entity.code"/>
+			</div>
+		</div>
+		<div class="col-sm-4">
+			<div class="input-group">
+				<div class="input-group-addon">权限名称</div>
+				<input type="text" class="form-control" v-model="entity.name"/>
+			</div>
+		</div>
+						</div>
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+					<button id="addBtn" type="button" class="btn btn-primary" @click="add('addModal')">保存</button>
+                    <button id="updateBtn" style="display:none;" type="button" class="btn btn-primary" @click="update('addModal')">更新</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+$(function() {
+    Vue.http.options.emulateJSON = true;
+    new VueBase({
+        el: '#permissionApp',
+        data: {
+            queryUrl: '../../../../background/module/tmp_permission/view/PermissionView.php',
+            addUrl: '../../../../background/module/tmp_permission/controller/AddPermissionAction.php',
+            updateUrl: '../../../../background/module/tmp_permission/controller/UpdatePermissionAction.php',
+            deleteUrl: '../../../../background/module/tmp_permission/controller/DeletePermissionAction.php',
+            updateViewUrl:'../../../../background/module/tmp_permission/view/UpdatePermissionView.php',
+
+            addHtml: '../../../../foreground/module/tmp_permission/permission_add.html',
+            detailHtml: '../../../../foreground/module/tmp_permission/permission_detail.html',
+            editHtml: '../../../../foreground/module/tmp_permission/permission_edit.html',
+
+            // 映射的后台模块名称
+            bean:'Permission',
+            // ID数组
+            ids:[],
+            // 查询条件
+            query: {
+                queryBegin: '0',
+                queryCount: '10',
+                pageCount: '0'
+            },
+            // 实体对象
+            entity: {},
+            // 实体列表
+            entityList: [],
+            // 返回信息
+            respMsg: ''
+        },
+        created() {
+            this.queryLoad()
+        },
+        methods: {
+        }
+    });
+});
+</script>

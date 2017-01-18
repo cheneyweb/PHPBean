@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>PHPBean-官方网站</title>
+    <!-- 为了兼容部署环境，统一使用相对路径 -->
+    <link href="/foreground/frame/bootstrap3/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <script src="/foreground/frame/jquery/jquery-2.0.3.js"></script>
+    <script src="/foreground/frame/bootstrap3/js/bootstrap.min.js"></script>
+    <style>
+
+    </style>
+</head>
+
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#">Developer：CheneyXu &nbsp;&nbsp;&nbsp;&nbsp; Contact：457299596@qq.com</a>
+            </div>
+        </div>
+    </div>
+    <div class="container" style="margin-top: 50px">
+        <div class="page-header">
+            <h1>状态机使用指南</h1>
+        </div>
+        <p class="lead">Struts封装实现了将视图层的<code>对象数据</code>传输到后台，在MVVM框架的设计中，由相关JS框架传输对象数据(PHPBean使用Vue)</p>
+
+        <blockquote>1、使用Vue将entity对象传输至后台,需要注意的是,在Vue的data中,需要额外增加<code>bean</code>名称，其对应的是后台的模块名称</blockquote>
+        <pre>data:{bean:'ModuleName',entity:{}}</pre>
+
+        <blockquote>2、定义Entity对象，在<code>module/prefix_module_name/entity/</code>路径下生成ModuleName.php文件</blockquote>
+<pre>
+include_once BASEURL . 'background/module/sys_query/entity/Query.php';
+/**
+ * 实体对象(实体bean属性需要全部为public)
+ * @author CheneyXu
+ *
+ */
+class ModuleName extends Query{
+    private static $tablePrefix='tmp';// 实体表前缀
+    public static function getTablePrefix(){return self::$tablePrefix;}
+    public $id;
+    public $code;
+    public $name;
+    public $operatorCreate;
+    public $datetimeCreate;
+    public $operatorModify;
+    public $datetimeModify;
+}
+</pre>
+
+        <blockquote>3、将entity对象传输至后台使用Struts接收<code>POST</code>数据，并且会自动转换成PHP对象</blockquote>
+        <pre><code>$entity = $this->struts->genEntity ();</code></pre>
+
+        <blockquote>一个完整保存前台传入对象数据的例子如下</blockquote>
+<pre>
+$(function() {
+    Vue.http.options.emulateJSON = true;
+    new VueBase({
+        el: '#permissionApp',
+        data: {
+            addUrl: '../../../../background/module/tmp_permission/controller/AddPermissionAction.php',
+            // 映射的后台模块名称
+            bean:'Permission',
+            // 实体对象
+            entity: {},
+            // 返回信息
+            respMsg: ''
+        },
+        created() {
+            this.queryLoad()
+        },
+        methods: {
+        }
+    });
+});
+</pre>
+<pre>
+/* 定义基础路径和导入基础包，基础包内置Spring工厂的初始化，以及模块spring.xml文件的载入 */
+define ( 'BASEURL', '../../../../' );
+include_once BASEURL . 'background/frame/util/package.php';
+
+// 根路径，模块名称，Action名称
+import ( 'tmp_permission', 'addPermissionAction' );
+
+/**
+ * 新增Action
+ *
+ * @author CheneyXu
+ *
+ */
+class AddPermissionAction {
+    public $struts;
+    public $permissionService;
+    public $permissionValidate;
+
+    // 执行体
+    public function execute() {
+        // 入参对象
+        $entity = $this->struts->genEntity ();
+        // 入参校验
+        $checkResult = $this->permissionValidate->checkEntity ( $entity );
+        if ($checkResult['respMsg'] != 'Y') {
+            echo json_encode ( $checkResult, JSON_UNESCAPED_UNICODE );
+            return;
+        }
+        // 保存
+        if (!$this->permissionService->insert ( $entity )) {
+            $checkResult['respMsg'] = '保存数据错误';
+        }
+        echo json_encode ( $checkResult, JSON_UNESCAPED_UNICODE );
+    }
+}
+</pre>
+        <p>返回 <a href="/index.html">首页</a></p>
+        <hr>
+        <footer>
+            <p>&copy; CheneyXu 2017</p>
+        </footer>
+    </div>
+</body>
+
+</html>

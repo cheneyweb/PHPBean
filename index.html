@@ -1,79 +1,78 @@
 ﻿<!DOCTYPE html>
 <html>
-	<head>
-		<meta charset="utf-8"/>
-		<title>PHPBean-官方网站</title>
-		<!-- 为了兼容部署环境，统一使用相对路径 -->
-		<link href="foreground/frame/bootstrap3/css/bootstrap.min.css" rel="stylesheet" media="screen">
-		<script src="foreground/frame/jquery/jquery-2.0.3.js"></script>
-		<script src="foreground/frame/bootstrap3/js/bootstrap.min.js"></script>
 
-		<style>
-		</style>
-	</head>
-  <body>
+<head>
+    <meta charset="utf-8" />
+    <title>PHPBean-官方网站</title>
+    <!-- 为了兼容部署环境，统一使用相对路径 -->
+    <link href="foreground/frame/bootstrap3/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <script src="foreground/frame/jquery/jquery-2.0.3.js"></script>
+    <script src="foreground/frame/bootstrap3/js/bootstrap.min.js"></script>
+    <style>
 
+    </style>
+</head>
+
+<body>
     <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-      <div class="container">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="#">Developer：CheneyXu &nbsp;&nbsp;&nbsp;&nbsp; Contact：457299596@qq.com</a>
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">Developer：CheneyXu &nbsp;&nbsp;&nbsp;&nbsp; Contact：457299596@qq.com</a>
+            </div>
         </div>
-      </div>
     </div>
-
     <!-- Main jumbotron for a primary marketing message or call to action -->
     <div class="jumbotron">
-      <div class="container">
-        <h1>PHPBean</h1>
-        <p>	一个集成了Struts,Hibernate,Spring...的神奇而无比精致小巧的PHPWeb框架——它很像Java?也许,它就是Java</p>
-        <p><a class="btn btn-primary btn-lg" role="button" href="index_admin.html">前往演示系统(MVVM) &raquo;</a></p>
-      </div>
+        <div class="container">
+            <h1>PHPBean</h1>
+            <p> 一个集成了Struts,Spring,Mybatis...神奇而无比精致小巧的PHPWeb框架——它很像Java?也许,它就是Java</p>
+            <p><a class="btn btn-primary btn-lg" role="button" href="index_admin.html">前往演示系统(Preview) &raquo;</a></p>
+        </div>
     </div>
-
     <div class="container">
-      <!-- Example row of columns -->
-      <div class="row">
-        <div class="col-md-4">
-          <h2>Struts集成</h2>
-          <p>PHP的初学者们是否经常会羡慕JavaWeb上的Struts?作为以极限接近JavaWeb为目标的PHP框架,怎么可以少了能够大大减轻开发工作量的Struts呢?在PHPBean中,已经用PHP的代码封装实现了专属于PHP上的Struts!</p>
-          <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
+        <div class="row">
+            <div class="col-md-4">
+                <h2>HelloWorld例子-轻编码理念</h2>
+                <p>PHPBean的理念是用最少最干练的代码,完成最核心最基础的工作。只需<code>一分钟</code>时间，就可以完成一个简单的HelloWorld例子</p>
+                <p><a class="btn btn-default" href="foreground/module/sys_tutorial/helloworld_tutorial.html" role="button">前往HelloWorld教程例子 &raquo;</a></p>
+            </div>
+            <div class="col-md-4">
+                <h2>Struts集成</h2>
+                <p>PHP的初学者们是否经常会羡慕JavaWeb上的Struts或SpringMVC?作为以极限接近JavaWeb为目标的PHP框架,怎么可以少了能够大大减轻开发工作量的Struts呢?在PHPBean中,已经用PHP的代码封装实现了专属于PHP上的Struts!</p>
+                <p><a class="btn btn-default" href="foreground/module/sys_tutorial/struts_tutorial.html" role="button">前往教程例子 &raquo;</a></p>
+            </div>
+            <div class="col-md-4">
+                <h2>Spring集成</h2>
+                <p>PHP的开发者们如果曾经有开发大型JavaWeb项目的经历,一定会对飘然无束的Spring留下深刻印象吧。是否也想在PHP上拥有呢?是的,PHPBean中也已经使用PHP的代码来实现了专属于PHP的IOC(控制反转或依赖注入),未来,还将继续实现AOP(面向切面)!</p>
+                <p><a class="btn btn-default" href="foreground/module/sys_tutorial/spring_tutorial.html" role="button">前往教程例子 &raquo;</a></p>
+            </div>
+            <div class="col-md-4">
+                <h2>Dao封装</h2>
+                <p>数据层应该是开发者们最烦,却又不得不面对的工作吧。无论是在Java上还是PHP上,都有着许许多多成熟流行的Dao框架,不过,这一次,PHPBean在数据库层的封装上提出的理念是——程序员为什么需要写SQL,而不是简单粗暴地把Bean塞到数据库呢?PHPBean正是这么做的</p>
+                <p><a class="btn btn-default" href="foreground/module/sys_tutorial/dao_tutorial.html" role="button">前往教程例子 &raquo;</a></p>
+            </div>
+            <div class="col-md-4">
+                <h2>Vue组件</h2>
+                <p>作为介于产品和框架之中的PHPBean,在前端的封装上也做了大量的工作,最典型的就是使用Vue的组件系统创建了众多灵活多样的前端组件,使得前端的开发轻松而又愉快,一杯咖啡之后,一个崭新多变的页面就出来了</p>
+                <p><a class="btn btn-default" href="foreground/module/sys_tutorial/vue_tutorial.html" role="button">前往教程例子 &raquo;</a></p>
+            </div>
+            <div class="col-md-4">
+                <h2>状态机工作流</h2>
+                <p>一般集成系统在处理复杂业务的时候,总难以避免写大量的service甚至是进行嵌套,PHPBean引入状态机概念,使用工作流配置文件,可以轻松处理复杂业务逻辑,每个插件之间相互前后对接,高内聚,松耦合,可以轻松对应复杂业务逻辑场景</p>
+                <p><a class="btn btn-default" href="foreground/module/sys_tutorial/status_tutorial.html" role="button">前往教程例子 &raquo;</a></p>
+            </div>
         </div>
-        <div class="col-md-4">
-          <h2>Spring集成</h2>
-          <p>PHP的开发者们如果曾经有开发大型JavaWeb项目的经历,一定会对飘然无束的Spring留下深刻印象吧。是否也想在PHP上拥有呢?是的,PHPBean中也已经使用PHP的代码来实现了专属于PHP的IOC(控制反转或依赖注入),未来,还将继续实现AOP(面向切面)!</p>
-          <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
-       </div>
-        <div class="col-md-4">
-          <h2>Dao封装</h2>
-          <p>数据层应该是开发者们最烦,却又不得不面对的工作吧。无论是在Java上还是PHP上,都有着许许多多成熟流行的Dao框架,不过,这一次,PHPBean在数据库层的封装上提出的理念是——程序员为什么需要写SQL,而不是简单粗暴地把Bean塞到数据库呢?PHPBean正是这么做的</p>
-          <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
-        </div>
-        <div class="col-md-4">
-          <h2>Vue组件</h2>
-          <p>作为介于产品和框架之中的PHPBean,在前端的封装上也做了大量的工作,最典型的就是使用Vue的组件系统创建了众多灵活多样的前端组件,使得前端的开发轻松而又愉快,一杯咖啡之后,一个崭新多变的页面就出来了</p>
-          <p><a class="btn btn-default" href="#" role="button">现在去看看 &raquo;</a></p>
-        </div>
-        <div class="col-md-4">
-          <h2>状态机工作流</h2>
-          <p>一般集成系统在处理复杂业务的时候,总难以避免写大量的service甚至是进行嵌套,PHPBean引入状态机概念,使用工作流配置文件,可以轻松处理复杂业务逻辑,每个插件之间相互前后对接,高内聚,松耦合,可以轻松对应复杂业务逻辑场景</p>
-          <p><a class="btn btn-default" href="#" role="button">现在去看看 &raquo;</a></p>
-        </div>
-        <div class="col-md-4">
-          <h2>轻编码理念</h2>
-          <p>PHPBean的理念是用最少最干练的代码,完成最核心最基础的工作。</p>
-          <p><a class="btn btn-default" href="#" role="button">现在去看看 &raquo;</a></p>
-        </div>
-      </div>
-      <hr>
+        <hr>
+        <footer>
+            <p>&copy; CheneyXu 2017</p>
+        </footer>
+    </div>
+</body>
 
-      <footer>
-        <p>&copy; Cheney 2017</p>
-      </footer>
-    </div> <!-- /container -->
 </html>

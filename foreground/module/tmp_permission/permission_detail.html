@@ -1,0 +1,76 @@
+<div id="permissionDetailApp">
+	<h2 class="sub-header">Permission详情</h2>
+	<!-- 操作信息提示 -->
+    <respmsg :resp-msg="respMsg"></respmsg>
+	<div class="form-group">
+		<button type="button" class="btn btn-primary" @click="showHtml(listHtml)">返回</button>
+	</div>
+	<table class="table table-bordered">
+	<tr>
+		<th class="col-sm-3">权限编码</th>
+		<td>{{entity.code}}</td>
+	</tr>
+	<tr>
+		<th class="col-sm-3">权限名称</th>
+		<td>{{entity.name}}</td>
+	</tr>
+	<tr>
+		<th class="col-sm-3">创建者</th>
+		<td>{{entity.operatorCreate}}</td>
+	</tr>
+	<tr>
+		<th class="col-sm-3">创建日期</th>
+		<td>{{entity.datetimeCreate}}</td>
+	</tr>
+	<tr>
+		<th class="col-sm-3">修改者</th>
+		<td>{{entity.operatorModify}}</td>
+	</tr>
+	<tr>
+		<th class="col-sm-3">修改日期</th>
+		<td>{{entity.datetimeModify}}</td>
+	</tr>
+	</table>
+</div>
+<script type="text/javascript">
+$(function() {
+	new VueBase({
+	    el: '#permissionDetailApp',
+	    data: {
+	        detailUrl: '../../../../background/module/tmp_permission/view/PermissionDetailView.php',
+
+	        listHtml: '../../../../foreground/module/tmp_permission/permission.html',
+
+	        // 映射后台模块名称
+	        bean:'Permission',
+	        entity:{},
+	        respMsg: ''
+	    },
+	    created() {
+            this.queryLoad()
+        },
+	    methods: {
+	        queryLoad: function() {
+	            var vm = this
+	            // 获取ID
+	            var id = location.href.split('#')[1]
+	            if(id != null && id != ''){
+		            vm.$http.post(vm.detailUrl, {bean:vm.bean,id:id})
+		                .then((sucResp) => {
+		                	var respObj = ($.parseJSON($.trim(sucResp.data)))
+	                        vm.respMsg = respObj.respMsg
+	                        if(vm.respMsg == 'Y'){
+			                	// 绑定返回的实体对象
+			                    vm.entity = respObj
+			                }
+		                }, (errResp) => {
+		                	vm.respMsg = errResp.data
+		                });
+	            }else{
+	            	vm.respMsg = '详情入参ID不能为空'
+	            }
+	        }
+	    }
+	});
+});
+</script>
