@@ -5,6 +5,7 @@
 		<a class="btn btn-primary btn-lg" href="#" role="button">官网主页
 			&raquo;</a>
 	</p>
+	<{if <{hasPermission code="SYSTEM"}> }>
 	<div class="row">
 		<div class="col-md-4">
 			<h2>账号管理</h2>
@@ -21,6 +22,7 @@
 			</p>
 		</div>
 	</div>
+	<{/if}>
 	<hr />
 	<footer>
 		<p>&copy; Cheney.Xu 2017</p>

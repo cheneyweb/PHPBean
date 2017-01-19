@@ -3,6 +3,8 @@
 			<h1>PHPBean 管理系统</h1>
 			<p>欢迎使用PHPBean 管理系统</p>
 			<p><a class="btn btn-primary btn-lg" href="#" role="button">官网主页 &raquo;</a></p>
+
+			<{if <{hasPermission code="ROOT"}> }>
 			<div class="row">
 				<div class="col-md-4">
 					<h2>模块管理</h2>
@@ -10,6 +12,8 @@
 					<p><a class="btn btn-default" href="javascript:showHtml('sys_module_manager','module_manager.html')">查看 &raquo;</a></p>
 				</div>
 			</div>
+			<{/if}>
+
 	      <hr>
 	      <footer>
 	        <p>&copy; Cheney.Xu 2017</p>
