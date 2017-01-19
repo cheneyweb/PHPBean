@@ -11,11 +11,14 @@ function hasPermission($args) {
 	// 需要的权限
 	$permissionNeeds = $permissionMap[$args ['code']];
 	// 拥有的权限中包含了需要的权限，则允许访问
-	if (stripos ( $rolePermissionIds, $permissionNeeds ) === false) {
-		return false;
-	} else {
-		return true;
+	// 遍历角色的所有权限，判断是否含有当前所需权限
+	$permissionIdArr = explode ( ',', $rolePermissionIds );
+	foreach ( $permissionIdArr as $permissionId ) {
+		if($permissionId === $permissionNeeds){
+			return true;
+		}
 	}
+	return false;
 }
 class SmartyUtil {
 	public function load() {

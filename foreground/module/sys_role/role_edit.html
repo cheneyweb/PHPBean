@@ -63,7 +63,7 @@
 			                	// 绑定返回的实体对象
 			                    vm.entity = respObj.result
 			                    // 勾选权限树
-			                    vm.checkNode('treePermission')
+			                    vm.checkNode('treePermission','permissionIds')
 		                	}
 		                }, (errResp) => {
 		                	vm.respMsg = errResp.data

@@ -202,11 +202,15 @@ var VueBase = Vue.extend({
             /**
              * [通用勾选树节点]
              * @param treeId [树ID]
+             * @param treeValueId [树节点隐藏域Value值ID]
              */
-            checkNode: function(treeId){
+            checkNode: function(treeId,treeValueId){
                 var vm = this
+                var treeObj=$.fn.zTree.getZTreeObj(treeId);
+                // 全部取消勾选
+                treeObj.checkAllNodes(false);
+                // 重新勾选
                 if(vm.entity.permissionIds.length > 0 && vm.entity.permissionIds != 0){
-                    var treeObj=$.fn.zTree.getZTreeObj(treeId);
                     var ids = vm.entity.permissionIds.split(',');
                     for(var i = 0; i < ids.length; i++ ) {
                         treeObj.checkNode(treeObj.getNodeByParam('id',ids[i]), true );
@@ -220,7 +224,8 @@ var VueBase = Vue.extend({
                             checkedCodes += ',';
                         }
                     }
-                    $('#permissionIds').val(checkedCodes);
+                    // 设置勾选值到隐藏域中
+                    $('#'+treeValueId).val(checkedCodes);
                 }
             },
             /**

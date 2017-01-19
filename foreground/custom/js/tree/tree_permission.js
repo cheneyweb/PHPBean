@@ -13,17 +13,18 @@ var setting = {
         }
 };
 var zNodes =[
-	{ id:1, pId:0, name:'系统管理'},
-		{ id:11, pId:1, name:'账户管理'},
-			{ id:111, pId:11, name:'查看'},
-			{ id:112, pId:11, name:'新增'},
-			{ id:113, pId:11, name:'修改'},
-			{ id:114, pId:11, name:'删除'},
-		{ id:12, pId:1, name:'角色管理'},
-			{ id:121, pId:12, name:'查看'},
-			{ id:122, pId:12, name:'新增'},
-			{ id:123, pId:12, name:'修改'},
-			{ id:124, pId:12, name:'删除'},
+	{ id:1, pId:0, name:'模块管理'},
+	{ id:2, pId:0, name:'系统管理'},
+		{ id:21, pId:2, name:'账户管理'},
+			{ id:211, pId:21, name:'查看'},
+			{ id:212, pId:21, name:'新增'},
+			{ id:213, pId:21, name:'修改'},
+			{ id:214, pId:21, name:'删除'},
+		{ id:22, pId:2, name:'角色管理'},
+			{ id:221, pId:22, name:'查看'},
+			{ id:222, pId:22, name:'新增'},
+			{ id:223, pId:22, name:'修改'},
+			{ id:224, pId:22, name:'删除'},
 ];
 //点击触发
 function onCheck(e,treeId,treeNode){

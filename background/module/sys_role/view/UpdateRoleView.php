@@ -28,7 +28,6 @@ class UpdateRoleView {
 			echo json_encode ( $checkResult, JSON_UNESCAPED_UNICODE );
 			return;
 		}
-
 		// 3、业务查询
 		$resp =  $this->roleService->queryRole ( $query );
 
