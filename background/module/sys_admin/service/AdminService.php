@@ -6,7 +6,6 @@ include_once BASEURL . 'background/module/sys_admin/entity/AdminRole.php';
  * 用户业务服务层
  */
 class AdminService extends BaseService{
-	public $pDOUtil;
 	public $adminDao;
 
 	/**
@@ -19,7 +18,7 @@ class AdminService extends BaseService{
 		$result = $this->adminDao->queryPage ( $entity );
 		$query = $this->adminDao->queryPageCount ( $entity );
 
-		$resp = array('result' => $result, 'query' => $query);
+		$resp = array('result' => $result, 'query' => $query, 'respMsg' => 'Y');
 		return $resp;
 	}
 
@@ -30,7 +29,9 @@ class AdminService extends BaseService{
 	 */
 	public function queryAdmin($entity) {
 		$result = $this->adminDao->queryAdmin ( $entity );
-		return $result;
+
+		$resp = array('result' => $result, 'respMsg' => 'Y');
+		return $resp;
 	}
 
 	// 新增

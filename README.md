@@ -54,6 +54,8 @@ Vue基础组件-前后台交互API
 		afterShowModal
 		showModal
 		// 删除数据
+		beforeDeleteByIds
+		afterDeleteByIds
 		deleteByIds
 	通用方法：
 		// 勾选数据
@@ -236,4 +238,5 @@ Action层API
 	2016.12.26:全新MVVM+MVC架构
 	2017.01.11:更新首页布局模式,由原先的从里往外改为从外往里
 	2017.01.18:开始编写使用指南
+	2017.01.19:整理后台代码
 	后续有待实现:全局系统配置，全局审核流

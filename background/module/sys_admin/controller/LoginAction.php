@@ -55,7 +55,8 @@ class LoginAction {
 		// 如果登录成功则显示
 		if ($result == 'Y') {
 			// 查询用户详细信息
-			$adminDetail = $this->adminService->queryAdmin ( $entity );
+			$resp = $this->adminService->queryAdmin ( $entity );
+			$adminDetail = $resp['result'];
 			// 存储用户详细信息到session中
 			$_SESSION ['admin'] = (array)$adminDetail;
 			// 使用smarty模版显示结果

@@ -1,5 +1,5 @@
-<div id="update_ExampleApp">
-	<h2 class="sub-header">编辑_Example</h2>
+<div id="updatePermissionApp">
+	<h2 class="sub-header">编辑Permission</h2>
 	<!-- 操作信息提示 -->
 	<respmsg :resp-msg="respMsg"></respmsg>
 	<!-- 新增表单 -->
@@ -11,7 +11,19 @@
 			<button type="button" class="btn btn-primary" @click="showHtml(listHtml)">取消</button>
 		</div>
 		<!-- Bean实体 -->
-		<div class="form-group"><divEdit></divEdit>
+		<div class="form-group">
+		<div class="col-sm-4">
+			<div class="input-group">
+				<div class="input-group-addon">权限编码</div>
+				<input type="text" class="form-control" v-model="entity.code"/>
+			</div>
+		</div>
+		<div class="col-sm-4">
+			<div class="input-group">
+				<div class="input-group-addon">权限名称</div>
+				<input type="text" class="form-control" v-model="entity.name"/>
+			</div>
+		</div>
 		</div>
 	</form>
 </div>
@@ -19,15 +31,15 @@
 <script type="text/javascript">
 $(function() {
 	new VueBase({
-	    el: '#update_ExampleApp',
+	    el: '#updatePermissionApp',
 	    data: {
-	    	detailUrl: '../../../../background/module/__example/view/_ExampleDetailView.php',
-	        updateUrl: '../../../../background/module/__example/controller/Update_ExampleAction.php',
+	    	detailUrl: '../../../../background/module/tmp_permission/view/PermissionDetailView.php',
+	        updateUrl: '../../../../background/module/tmp_permission/controller/UpdatePermissionAction.php',
 
-	        listHtml: '../../../../foreground/module/__example/__noprefixexample.html',
+	        listHtml: '../../../../foreground/module/tmp_permission/permission.html',
 
 	        // 映射后台模块名称
-	        bean:'_Example',
+	        bean:'Permission',
 	        entity: {},
 			// 返回信息
         	respMsg: ''

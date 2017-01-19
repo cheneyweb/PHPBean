@@ -30,9 +30,8 @@ class UpdateAdminView {
 		}
 		// 3、业务查询
 		$resp = $this->adminService->queryAdmin ( $query );
-		$resp->password = '123456';
+		$resp['result']->password = '123456';
 		// 4、数据返回
-		$resp->respMsg = 'Y';
 		$resp = json_encode ( $resp, JSON_UNESCAPED_UNICODE );
 		echo $resp;
 		// @session_start ();

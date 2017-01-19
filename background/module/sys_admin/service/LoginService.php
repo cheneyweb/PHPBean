@@ -3,12 +3,13 @@ class LoginService
 {
 	public $pDOUtil;
 	public $adminService;
-	
+
 	public function login($admin){
 		$admin->password = sha1($admin->password);
 		$password = $admin->password;
 		$admin->password = null;
-		$adminResult = $this->adminService->queryArr($admin);
+		$resp = $this->adminService->queryArr($admin);
+		$adminResult = $resp['result'];
 		if($adminResult == null){
 			return '帐号不存在';
 		}else{

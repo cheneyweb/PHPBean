@@ -1,13 +1,13 @@
 <?php
 include_once BASEURL . 'background/module/sys_module_manager/service/BaseService.php';
-include_once BASEURL . 'background/module/__example/entity/_Example.php';
+include_once BASEURL . 'background/module/tmp_permission/entity/Permission.php';
 /**
  * Service业务封装
  * @author 宇帅
  *
  */
-class _ExampleService extends BaseService{
-	public $_exampleDao;
+class PermissionService extends BaseService{
+	public $permissionDao;
 
 	/**
 	 * 分页查询(自定义SQL)
@@ -16,8 +16,8 @@ class _ExampleService extends BaseService{
 	 * @return arr[objarr,query,返回结果]
 	 */
 	public function queryPage($entity) {
-		$result = $this->_exampleDao->queryPage ( $entity );
-		$query = $this->_exampleDao->queryPageCount ( $entity );
+		$result = $this->permissionDao->queryPage ( $entity );
+		$query = $this->permissionDao->queryPageCount ( $entity );
 
 		$resp = array('result' => $result, 'query' => $query, 'respMsg' => 'Y');
 		return $resp;
@@ -28,8 +28,8 @@ class _ExampleService extends BaseService{
 	 * @param 实体对象 $entity
 	 * @return arr[objarr,返回结果]
 	 */
-	public function query_ExampleArr($entity){
-		$result = $this->_exampleDao->query_ExampleArr($entity);
+	public function queryPermissionArr($entity){
+		$result = $this->permissionDao->queryPermissionArr($entity);
 
 		$resp = array('result' => $result, 'respMsg' => 'Y');
 		return $resp;
@@ -40,8 +40,8 @@ class _ExampleService extends BaseService{
 	 * @param 实体对象 $entity
 	 * @return arr[obj,返回结果]
 	 */
-	public function query_Example($entity){
-		$result = $this->_exampleDao->query_Example($entity);
+	public function queryPermission($entity){
+		$result = $this->permissionDao->queryPermission($entity);
 
 		$resp = array('result' => $result, 'respMsg' => 'Y');
 		return $resp;
@@ -55,7 +55,7 @@ class _ExampleService extends BaseService{
 	public function deleteByIds($ids) {
 		// 循环删除记录
 		foreach ($ids as $id){
-			$entity = new _Example();
+			$entity = new Permission();
 			$entity->id = $id;
 			$this->pDOUtil->delete ( $entity );
 		}

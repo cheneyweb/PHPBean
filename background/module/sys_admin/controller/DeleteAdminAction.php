@@ -26,7 +26,6 @@ class DeleteAdminAction {
 			$entity->id = $id;
 			$this->adminService->delete ( $entity );
 		}
-
 		echo json_encode ( $checkResult, JSON_UNESCAPED_UNICODE );
 	}
 }

@@ -9,7 +9,6 @@ include_once BASEURL . 'background/module/sys_role/entity/RolePermission.php';
  *
  */
 class RoleService extends BaseService{
-	public $pDOUtil;
 	public $roleDao;
 
 	/**
@@ -22,7 +21,7 @@ class RoleService extends BaseService{
 		$result = $this->roleDao->queryPage ( $entity );
 		$query = $this->roleDao->queryPageCount ( $entity );
 
-		$resp = array('result' => $result, 'query' => $query);
+		$resp = array('result' => $result, 'query' => $query, 'respMsg' => 'Y');
 		return $resp;
 	}
 
@@ -34,7 +33,9 @@ class RoleService extends BaseService{
 	 */
 	public function queryRoleArr($entity) {
 		$result = $this->roleDao->queryRoleArr ( $entity );
-		return $result;
+
+		$resp = array('result' => $result, 'respMsg' => 'Y');
+		return $resp;
 	}
 
 	/**
@@ -45,7 +46,9 @@ class RoleService extends BaseService{
 	 */
 	public function queryRole($entity) {
 		$result = $this->roleDao->queryRole ( $entity );
-		return $result;
+
+		$resp = array('result' => $result, 'respMsg' => 'Y');
+		return $resp;
 	}
 
 	/**

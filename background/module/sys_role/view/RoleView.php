@@ -35,7 +35,6 @@ class RoleView {
 		$resp = $this->roleService->queryPage ( $query );
 
 		// 4、数据返回
-		$resp['respMsg'] = 'Y';
 		$resp = json_encode ( $resp, JSON_UNESCAPED_UNICODE );
 		echo $resp;
 	}

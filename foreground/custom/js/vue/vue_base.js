@@ -98,7 +98,7 @@ var VueBase = Vue.extend({
             afterUpdateModal: function(respObj,modalId){
                 var vm = this
                 // 获取详情数据
-                vm.entity = respObj
+                vm.entity = respObj.result
                 // 更换提交按钮
                 $('#updateBtn').show()
                 $('#addBtn').hide()
@@ -162,14 +162,24 @@ var VueBase = Vue.extend({
             /**
              * [通用根据ids批量删除]
              */
+            beforeDeleteByIds(){},
+            afterDeleteByIds(respObj){
+                var vm = this
+                // 重新查询
+                vm.queryLoad()
+            },
             deleteByIds: function() {
                 var vm = this
+                // =====1,删除前置操作=====
+                vm.beforeDeleteByIds()
+
                 vm.$http.post(vm.deleteUrl, {"ids":vm.ids})
                     .then((sucResp) => {
                         var respObj = vm.receiveData(sucResp)
                         if(vm.respMsg == 'Y'){
-                            // 重新查询
-                            vm.queryLoad()
+                             // =====2,删除后置操作=====
+                            vm.afterDeleteByIds(respObj)
+
                         }
                     }, (errResp) => {
                         vm.respMsg = errResp.data

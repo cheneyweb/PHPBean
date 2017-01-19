@@ -4,33 +4,33 @@ include_once BASEURL . 'background/frame/util/package.php';
 include_once BASEURL . 'background/frame/dao/pdo/PDOUtil.php';
 /**
  * 状态引擎
- * 
+ *
  * @author 宇帅
- *        
+ *
  */
 class StatusEngine {
 	/**
 	 * 加载并执行插件
-	 * 
-	 * @param unknown $moduleName        	
-	 * @param unknown $pluginName        	
+	 *
+	 * @param unknown $moduleName
+	 * @param unknown $pluginName
 	 */
 	public static function importPlugin($moduleName, $pluginName) {
 		// 载入Spring工厂文件
 		include_once BASEURL . 'background/frame/spring/BeanFactory.php';
-		
+
 		// 载入plugin.xml配置文件
 		BeanFactory::init ( BASEURL, "background/module/" . $moduleName . "/config/plugin.xml" );
-		
+
 		// IOC依赖注入生成Action的Bean
 		$plugin = BeanFactory::getNewBeanByName ( $pluginName );
 		return $plugin;
 	}
-	
+
 	/**
 	 * 校验状态
-	 * 
-	 * @param unknown $status        	
+	 *
+	 * @param unknown $status
 	 */
 	public static function checkStatus($entity) {
 		$flag = 'N';
@@ -77,10 +77,10 @@ class StatusEngine {
 			return '当前状态不可执行该操作';
 		}
 	}
-	
+
 	/**
 	 * 变更状态
-	 * 
+	 *
 	 * @param unknown $inparam
 	 *        	操作入参
 	 * @param obj $entity

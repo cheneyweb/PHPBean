@@ -178,7 +178,7 @@ $(function() {
             afterUpdateModal: function(respObj,modalId){
                 var vm = this
                 // 获取详情数据
-                vm.entity = respObj
+                vm.entity = respObj.result
                 // 更换提交按钮
                 $('#updateBtn').show()
                 $('#addBtn').hide()

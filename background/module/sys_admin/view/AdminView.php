@@ -35,11 +35,10 @@ class AdminView {
 
 		// 查询所有的角色
 		$roleQuery = new Role ();
-		$roles = $this->roleService->queryArr ( $roleQuery );
-
+		$rolesResp = $this->roleService->queryArr ( $roleQuery );
+		$roles = $rolesResp['result'];
 		// 4、数据返回
 		$resp['roles'] = $roles;
-		$resp['respMsg'] = 'Y';
 		$resp = json_encode ( $resp, JSON_UNESCAPED_UNICODE );
 		echo $resp;
 	}

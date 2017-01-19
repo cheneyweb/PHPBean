@@ -6,22 +6,26 @@ class BaseService {
 	 * 查询数据Obj数组
 	 *
 	 * @param 实体对象 $entity
-	 * @return arr[obj] (查询不到时返回null)
+	 * @return arr[objarr,返回结果]
 	 */
 	public function queryArr($entity) {
 		$result = $this->pDOUtil->queryArr ( $entity );
-		return $result;
+
+		$resp = array('result' => $result, 'respMsg' => 'Y');
+		return $resp;
 	}
 
 	/**
 	 * 查询单个数据Obj
 	 *
 	 * @param 实体对象 $entity
-	 * @return obj(查询不到时返回null)
+	 * @return arr[obj,返回结果]
 	 */
 	public function queryObj($entity) {
 		$result = $this->pDOUtil->queryObj ( $entity );
-		return $result;
+
+		$resp = array('result' => $result, 'respMsg' => 'Y');
+		return $resp;
 	}
 
 	/**

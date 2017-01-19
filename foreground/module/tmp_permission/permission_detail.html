@@ -1,24 +1,48 @@
-<div id="_exampleDetailApp">
-	<h2 class="sub-header">_Example详情</h2>
+<div id="permissionDetailApp">
+	<h2 class="sub-header">Permission详情</h2>
 	<!-- 操作信息提示 -->
     <respmsg :resp-msg="respMsg"></respmsg>
 	<div class="form-group">
 		<button type="button" class="btn btn-primary" @click="showHtml(listHtml)">返回</button>
 	</div>
-	<table class="table table-bordered"><tr></tr>
+	<table class="table table-bordered">
+	<tr>
+		<th class="col-sm-3">权限编码</th>
+		<td>{{entity.code}}</td>
+	</tr>
+	<tr>
+		<th class="col-sm-3">权限名称</th>
+		<td>{{entity.name}}</td>
+	</tr>
+	<tr>
+		<th class="col-sm-3">创建者</th>
+		<td>{{entity.operatorCreate}}</td>
+	</tr>
+	<tr>
+		<th class="col-sm-3">创建日期</th>
+		<td>{{entity.datetimeCreate}}</td>
+	</tr>
+	<tr>
+		<th class="col-sm-3">修改者</th>
+		<td>{{entity.operatorModify}}</td>
+	</tr>
+	<tr>
+		<th class="col-sm-3">修改日期</th>
+		<td>{{entity.datetimeModify}}</td>
+	</tr>
 	</table>
 </div>
 <script type="text/javascript">
 $(function() {
 	new VueBase({
-	    el: '#_exampleDetailApp',
+	    el: '#permissionDetailApp',
 	    data: {
-	        detailUrl: '../../../../background/module/__example/view/_ExampleDetailView.php',
+	        detailUrl: '../../../../background/module/tmp_permission/view/PermissionDetailView.php',
 
-	        listHtml: '../../../../foreground/module/__example/__noprefixexample.html',
+	        listHtml: '../../../../foreground/module/tmp_permission/permission.html',
 
 	        // 映射后台模块名称
-	        bean:'_Example',
+	        bean:'Permission',
 	        entity:{},
 	        respMsg: ''
 	    },

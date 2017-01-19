@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sqlMap>
+	<include id="basicColumn">
+		id,
+		code,
+		name,
+		operator_create,
+		datetime_create,
+		operator_modify,
+		datetime_modify
+	</include>
+	
+	<include id="detailColumn">
+		tmp_permission.id,
+		tmp_permission.code,
+		tmp_permission.name,
+		tmp_permission.operator_create,
+		tmp_permission.datetime_create,
+		tmp_permission.operator_modify,
+		tmp_permission.datetime_modify
+	</include>
+
+	<include id="where">
+		where 1=1
+		<isNotEmpty property="id">and id=:id</isNotEmpty>
+		<isNotEmpty property="code">and code=:code</isNotEmpty>
+		<isNotEmpty property="name">and name=:name</isNotEmpty>
+		<isNotEmpty property="operatorCreate">and operator_create=:operatorCreate</isNotEmpty>
+		<isNotEmpty property="datetimeCreate">and datetime_create=:datetimeCreate</isNotEmpty>
+		<isNotEmpty property="operatorModify">and operator_modify=:operatorModify</isNotEmpty>
+		<isNotEmpty property="datetimeModify">and datetime_modify=:datetimeModify</isNotEmpty>
+	</include>
+	
+	<include id="detailWhere">
+		where 1=1
+		<isNotEmpty property="id">and tmp_permission.id=:id</isNotEmpty>
+		<isNotEmpty property="code">and tmp_permission.code=:code</isNotEmpty>
+		<isNotEmpty property="name">and tmp_permission.name=:name</isNotEmpty>
+		<isNotEmpty property="operatorCreate">and tmp_permission.operator_create=:operatorCreate</isNotEmpty>
+		<isNotEmpty property="datetimeCreate">and tmp_permission.datetime_create=:datetimeCreate</isNotEmpty>
+		<isNotEmpty property="operatorModify">and tmp_permission.operator_modify=:operatorModify</isNotEmpty>
+		<isNotEmpty property="datetimeModify">and tmp_permission.datetime_modify=:datetimeModify</isNotEmpty>
+	</include>
+	
+	<select id="queryPage">
+		select
+		<include refid="basicColumn" />
+		from tmp_permission
+		<include refid="where" />
+		order by datetime_create desc
+		limit queryBegin=:queryBegin,queryCount=:queryCount
+	</select>
+	
+	<select id="queryPageCount">
+		select ceil(count(1)/queryCount=:queryCount) as pageCount
+		from tmp_permission
+		<include refid="where" />
+	</select>
+	
+	<select id="queryPermission">
+		select
+		<include refid="detailColumn" />
+		from tmp_permission
+		<include refid="detailWhere" />
+	</select>
+	
+	<select id="queryPermissionArr">
+		select
+		<include refid="detailColumn" />
+		from tmp_permission
+		<include refid="detailWhere" />
+	</select>
+</sqlMap>
