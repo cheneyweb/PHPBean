@@ -30,7 +30,8 @@
 			<div class="col-sm-1">
 				<button type=button class="btn btn-default" @click="queryLoad">查询</button>
 			</div>
-			<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addModal">新增</button>
+			<button type="button" class="btn btn-primary" @click="showHtml(addHtml)">创建表和模块</button>
+			<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addModal">直接创建模块</button>
 			<button type="button" class="btn btn-danger" @click="deleteByIds">删除</button>
 		</div>
 	</form>
@@ -73,6 +74,9 @@
                     </div>
 				</div>
 				<div class="modal-body">
+					<p>1、<code>模块全名</code>应与<code>数据表</code>名一致,命名规范为<code>“前缀_名称”</code>,例如数据表名为“tb_user”,则模块全名也为“tb_user”,另外需要注意<code>名称部分</code>若是词组,需要以<code>下划线</code>间隔,例如用户详情表,全命名为“tb_user_detail”</p>
+					<p>2、若数据表已存在,系统会根据数据表自动创建同名模块,模块路径位于<code>/background/module/</code>和<code>/foreground/module/</code>下</p>
+					<p>3、若数据表不存在,系统先自动创建默认基础表，再执行<code>第2步</code>操作</p>
 					<!-- 新增表单 -->
 					<form class="form-horizontal" method="POST">
 						<!-- 实体 -->

@@ -4,10 +4,14 @@ include_once BASEURL . 'background/module/sys_query/entity/Query.php';
 class Module extends Query{
 	private static $tablePrefix='sys';// 实体表前缀
 	public static function getTablePrefix(){return self::$tablePrefix;}
-	
+
 	public $id;
 	public $code;
 	public $name;
 	public $datetimeCreate;
+
+	// 拓展字段，使用完毕需要置空才能使用实体对象进行数据库操作
+	// 数据结构：arr[{name:'',type:'',comment:''}]
+	public $columns;
 }
 ?>

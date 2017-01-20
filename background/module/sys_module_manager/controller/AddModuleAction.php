@@ -26,7 +26,6 @@ class AddModuleAction {
 			echo json_encode ( $checkResult, JSON_UNESCAPED_UNICODE );
 			return;
 		}
-
 		$tablePrefix = $entity->code; // 新模块前缀
 		$tableName = $entity->name; // 新模块名
 

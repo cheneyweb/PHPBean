@@ -12,11 +12,14 @@ class ModuleWelcomeView {
 	// 执行体
 	public function execute() {
 		@session_start ();
-		$adminDetail = $_SESSION ['admin'];
-		if (! isEmpty ( $adminDetail )) {
+		if ( isset ( $_SESSION ['admin'] )) {
+			$adminDetail = $_SESSION ['admin'];
+
 			$smarty = $this->smartyUtil->load ();
 			$smarty->assign ( 'admin', $adminDetail );
 			$smarty->display ( BASEURL . 'foreground/module/layout/layout_module.html' );
+		} else {
+			echo '非法登陆';
 		}
 	}
 }
