@@ -1,9 +1,8 @@
 
 <?php
-include_once 'SQLUtil.php';
 /**
  *
- * @author 宇帅
+ * @author CheneyXu
  *         PDO工具基类，用于数据库连接
  */
 class PDOBase {
