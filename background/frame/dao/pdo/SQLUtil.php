@@ -5,6 +5,9 @@
  * @date:		2015年5月5日
  */
 class SQLUtil {
+	// 系统保留查询字段
+	protected static $queryAttrArr = ["queryBegin" => true,"queryCount" => true, "pageCount" => true];
+
 	/**
 	 * 获取表名
 	 *
@@ -36,12 +39,12 @@ class SQLUtil {
 		$sqlstr1 = '(';
 		$sqlstr2 = '(';
 		// 先计算非空值字段数量
-		$count = self::countNotNullProp ( $entityVars, $entity );
+		$count = self::countProp ( $entityVars, $entity ,false );
 		// 遍历属性，开始组合SQL
 		foreach ( $entityVars as $prop ) {
 			$key = $prop->getName ();
 			$value = $prop->getValue ( $entity );
-			if (! isEmpty ( $value ) && $key != 'queryBegin' && $key != 'queryCount' && $key != 'pageCount') {
+			if ( self::checkAttrValue($key, $value, false) ) {
 				if ($i < $count) {
 					$sqlstr1 .= formatPHPStyle ( $key ) . ',';
 					$sqlstr2 .= ':' . $key . ',';
@@ -78,7 +81,7 @@ class SQLUtil {
 		foreach ( $entityVars as $prop ) {
 			$key = $prop->getName ();
 			$value = $prop->getValue ( $entity );
-			if (! isEmpty ( $value ) && $key != 'queryBegin' && $key != 'queryCount' && $key != 'pageCount') {
+			if ( self::checkAttrValue($key, $value, false) ) {
 				if ($i == 1) {
 					$sqlstr1 .= formatPHPStyle ( $key ) . '=' . ':' . $key;
 				} else {
@@ -108,13 +111,13 @@ class SQLUtil {
 		$sqlstr = 'update ' . $tableName . ' set ';
 		$sqlstr1 = '';
 		// 先计算非空属性数量
-		$count = self::countNotNullProp ( $entityVars, $entity );
+		$count = self::countProp ( $entityVars, $entity, false );
 		// 遍历属性，开始组合SQL
 		foreach ( $entityVars as $prop ) {
 			$key = $prop->getName ();
 			$value = $prop->getValue ( $entity );
 			// 空值不设值
-			if (! isEmpty ( $value ) && $key != 'queryBegin' && $key != 'queryCount' && $key != 'pageCount') {
+			if ( self::checkAttrValue($key, $value, false) ) {
 				if ($i < $count) {
 					$sqlstr1 .= formatPHPStyle ( $key ) . '=' . ':' . $key . ',';
 				} else {
@@ -161,7 +164,8 @@ class SQLUtil {
 		// 反射获得属性信息
 		$r = new ReflectionClass ( $entity );
 		$entityVars = $r->getProperties ( ReflectionProperty::IS_PUBLIC );
-		$count = count ( $entityVars );
+		// 先计算属性数量
+		$count = self::countProp ( $entityVars, $entity, true );
 		$i = 1;
 		// 获取表名
 		$tableName = self::getTableName ( $entity, $r );
@@ -171,13 +175,17 @@ class SQLUtil {
 		// 遍历属性，开始组合SQL
 		foreach ( $entityVars as $prop ) {
 			$key = $prop->getName ();
-			// 空值也设值
-			if ($i < $count) {
-				$sqlstr1 .= formatPHPStyle ( $key ) . '=' . ':' . $key . ',';
-			} else {
-				$sqlstr1 .= formatPHPStyle ( $key ) . '=' . ':' . $key;
+			$value = $prop->getValue ( $query );
+
+			// 空值也设值，设置isFullBind=true
+			if ( self::checkAttrValue($key, $value, true) ) {
+				if ($i < $count) {
+					$sqlstr1 .= formatPHPStyle ( $key ) . '=' . ':' . $key . ',';
+				} else {
+					$sqlstr1 .= formatPHPStyle ( $key ) . '=' . ':' . $key;
+				}
+				$i ++;
 			}
-			$i ++;
 		}
 		// 生成条件代码
 		$r = new ReflectionClass ( $query );
@@ -189,7 +197,7 @@ class SQLUtil {
 			$key = $prop->getName ();
 			$value = $prop->getValue ( $query );
 
-			if (! isEmpty ( $value ) && $key != 'queryBegin' && $key != 'queryCount' && $key != 'pageCount') {
+			if ( self::checkAttrValue($key, $value, false) ) {
 				if ($i == 1) {
 					$sqlstr2 .= formatPHPStyle ( $key ) . '=' . ':' . $key;
 				} else {
@@ -220,7 +228,7 @@ class SQLUtil {
 		foreach ( $entityVars as $prop ) {
 			$key = $prop->getName ();
 			$value = $prop->getValue ( $entity );
-			if (! isEmpty ( $value ) && $key != 'queryBegin' && $key != 'queryCount' && $key != 'pageCount') {
+			if ( self::checkAttrValue($key, $value, false) ) {
 				$sqlstr1 .= formatPHPStyle ( $key ) . '=' . '\'' . $value . '\'' . ' and ';
 			}
 		}
@@ -230,18 +238,19 @@ class SQLUtil {
 	}
 
 	/**
-	 * 计算非空属性数量
+	 * 私有方法：计算属性数量
 	 *
-	 * @param unknown $entityVars
-	 * @param unknown $entity
+	 * @param 实体对象键值对 $entityVars
+	 * @param 实体对象 $entity
+	 * @param 是否全绑定 $isFullBind
 	 * @return number
 	 */
-	private static function countNotNullProp($entityVars, $entity) {
+	private static function countProp($entityVars, $entity, $isFullBind) {
 		$count = 0;
 		foreach ( $entityVars as $prop ) {
 			$key = $prop->getName ();
 			$value = $prop->getValue ( $entity );
-			if (! isEmpty ( $value ) && $key != 'queryBegin' && $key != 'queryCount' && $key != 'pageCount') {
+			if ( self::checkAttrValue($key, $value, $isFullBind) ) {
 				$count ++;
 			}
 		}
@@ -249,10 +258,10 @@ class SQLUtil {
 	}
 
 	/**
-	 * 获取表前缀
+	 * 私有方法：获取表前缀
 	 *
-	 * @param unknown $entityVars
-	 * @param unknown $entity
+	 * @param 实体对象键值对 $entityVars
+	 * @param 实体对象 $entity
 	 * @return number
 	 */
 	private static function getTablePrefix($entity, $r) {
@@ -264,6 +273,29 @@ class SQLUtil {
 			}
 		}
 		return "sys_";
+	}
+
+	/**
+	 * 私有方法：检查实体对象的属性值是否合法
+	 *
+	 * @param 实体属性名 $key
+	 * @param 实体属性值 $value
+	 * @param 是否全绑定 $isFullBind
+	 * @return boolean
+	 */
+	private static function checkAttrValue($key,$value,$isFullBind){
+		// 属性值类型检查
+		if(is_array($value)){
+			Log::error(__METHOD__.EnumErrorMsg::ATTR_TYPE_ARRARY);
+		}
+		if(is_object($value)){
+			Log::error(__METHOD__.EnumErrorMsg::ATTR_TYPE_OBJECT);
+		}
+		// 如果是非全绑定，则空属性不处理（系统内置查询字段除外）
+		if ( ( !isEmpty ( $value ) || $isFullBind ) && !isset( self::$queryAttrArr[$key] ) ) {
+			return true;
+		}
+		return false;
 	}
 }
 ?>

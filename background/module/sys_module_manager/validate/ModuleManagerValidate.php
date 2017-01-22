@@ -19,7 +19,6 @@ class ModuleManagerValidate {
 	public function checkEntity($entity){
 		$checkResult = array('respMsg' => 'Y');
 		$columns = $entity->columns;
-		$entity->columns = null;
 		if (empty ( $entity )) {
 			$checkResult['respMsg'] = '入参对象不能为空';
 			return $checkResult;
@@ -41,7 +40,6 @@ class ModuleManagerValidate {
 			$this->createTable($entity);
 			// return $checkResult;
 		}
-		$entity->columns = null;
 		return $checkResult;
 	}
 

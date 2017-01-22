@@ -62,7 +62,6 @@ class RoleService extends BaseService{
 		$this->pDOUtil->beginTransaction ();
 		// 1、插入角色
 		$permissionIds = $entity->permissionIds;
-		$entity->permissionIds = null;
 		$this->pDOUtil->insert ( $entity );
 		// 结果判断
 		if (empty ( $entity->id )) {
@@ -130,7 +129,6 @@ class RoleService extends BaseService{
 			}
 		}
 		// 3、更新角色信息
-		$entity->permissionIds = null;
 		$this->pDOUtil->update ( $entity, null );
 		// 4、事务提交
 		$this->pDOUtil->commit ();
