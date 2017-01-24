@@ -15,7 +15,7 @@ class PDOUtil extends PDOBind{
 	 */
 	public function insert($entity) {
 		// 自动校正实体属性和其映射的数据表列映射
-		$this->autoCheckAttr($entity,$this->enableAutoCheckAttr);
+		EntityUtil::autoCheckAttr($entity,$this->dbh);
 		// 根据实体初始化SQL
 		$sql = SQLUtil::insertSQL ( $entity );
 		// 绑定参数并执行
@@ -29,7 +29,7 @@ class PDOUtil extends PDOBind{
 	 * @param 实体 $entity
 	 */
 	public function delete($entity) {
-		$this->autoCheckAttr($entity,$this->enableAutoCheckAttr);
+		EntityUtil::autoCheckAttr($entity,$this->dbh);
 		$sql = SQLUtil::deleteSQL ( $entity );
 		$this->bindParam ( $sql, $entity, false );
 	}
@@ -41,7 +41,7 @@ class PDOUtil extends PDOBind{
 	 * @param 条件 $query（可以为空）
 	 */
 	public function update($entity, $query) {
-		$this->autoCheckAttr($entity,$this->enableAutoCheckAttr);
+		EntityUtil::autoCheckAttr($entity,$this->dbh);
 		$sql = SQLUtil::updateSQL ( $entity, $query );
 		$this->bindParam ( $sql, $entity, false );
 	}
@@ -52,7 +52,7 @@ class PDOUtil extends PDOBind{
 	 * @param 条件 $query（可以为空）
 	 */
 	public function updateAll($entity, $query) {
-		$this->autoCheckAttr($entity,$this->enableAutoCheckAttr);
+		EntityUtil::autoCheckAttr($entity,$this->dbh);
 		$sql = SQLUtil::updateAllSQL ( $entity, $query );
 		$this->bindParam ( $sql, $entity, true );
 	}
@@ -64,7 +64,7 @@ class PDOUtil extends PDOBind{
 	 * @return obj
 	 */
 	public function queryObj($entity) {
-		$this->autoCheckAttr($entity,$this->enableAutoCheckAttr);
+		EntityUtil::autoCheckAttr($entity,$this->dbh);
 		$sql = SQLUtil::selectSQL ( $entity );
 		return $this->bindParamAndExecForObj ( $sql, $entity, false );
 	}
@@ -76,7 +76,7 @@ class PDOUtil extends PDOBind{
 	 * @return arr[obj]
 	 */
 	public function queryArr($entity) {
-		$this->autoCheckAttr($entity,$this->enableAutoCheckAttr);
+		EntityUtil::autoCheckAttr($entity,$this->dbh);
 		$sql = SQLUtil::selectSQL ( $entity );
 		return $this->bindParamAndExecForObjArr ( $sql, $entity, false );
 	}

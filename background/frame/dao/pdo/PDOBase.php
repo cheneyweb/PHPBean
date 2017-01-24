@@ -6,7 +6,7 @@
  *         PDO工具基类，用于数据库连接
  */
 class PDOBase {
-
+	// 数据库连接参数
 	protected $dbms = 'mysql'; // 数据库类型
 	protected $host = 'localhost';
 	protected $port = '3306';
