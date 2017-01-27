@@ -9,7 +9,7 @@ import ( '__example', 'update_ExampleAction' );
 /**
  * 更新Action
  *
- * @author 宇帅
+ * @author CheneyXu
  *
  */
 class Update_ExampleAction {

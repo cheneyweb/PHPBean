@@ -9,7 +9,7 @@ import ( '__example', 'add_ExampleAction' );
 /**
  * 新增Action
  *
- * @author 宇帅
+ * @author CheneyXu
  *
  */
 class Add_ExampleAction {

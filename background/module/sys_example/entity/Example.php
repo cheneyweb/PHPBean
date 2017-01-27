@@ -2,7 +2,7 @@
 include_once BASEURL . 'background/module/sys_query/entity/Query.php';
 /**
  * 实体对象(实体bean属性需要全部为public)
- * @author 宇帅
+ * @author CheneyXu
  *
  */
 class _Example extends Query{

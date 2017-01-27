@@ -10,7 +10,7 @@ import ( 'sys_admin', 'updateAdminView' );
 /**
  * 更新页面
  *
- * @author 宇帅
+ * @author CheneyXu
  *
  */
 class UpdateAdminView {

@@ -9,7 +9,7 @@ import ( '__example', 'delete_ExampleAction' );
 /**
  * 删除Action
  *
- * @author 宇帅
+ * @author CheneyXu
  *
  */
 class Delete_ExampleAction {

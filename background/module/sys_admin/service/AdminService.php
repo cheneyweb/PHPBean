@@ -25,7 +25,7 @@ class AdminService extends BaseService{
 	 * @return obj
 	 */
 	public function queryAdmin($entity) {
-		$result = $this->adminDao->queryAdmin ( $entity );
+		$result = $this->adminDao->queryObj ( $entity );
 		$resp = array('result' => $result, 'respMsg' => 'Y');
 		return $resp;
 	}

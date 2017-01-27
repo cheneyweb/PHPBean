@@ -3,7 +3,7 @@ include_once BASEURL . 'background/module/sys_module_manager/service/BaseService
 include_once BASEURL . 'background/module/__example/entity/_Example.php';
 /**
  * Service业务封装
- * @author 宇帅
+ * @author CheneyXu
  *
  */
 class _ExampleService extends BaseService{
@@ -29,7 +29,7 @@ class _ExampleService extends BaseService{
 	 * @return arr[objarr,返回结果]
 	 */
 	public function query_ExampleArr($entity){
-		$result = $this->_exampleDao->query_ExampleArr($entity);
+		$result = $this->_exampleDao->queryArr($entity);
 
 		$resp = array('result' => $result, 'respMsg' => 'Y');
 		return $resp;
@@ -41,7 +41,7 @@ class _ExampleService extends BaseService{
 	 * @return arr[obj,返回结果]
 	 */
 	public function query_Example($entity){
-		$result = $this->_exampleDao->query_Example($entity);
+		$result = $this->_exampleDao->queryObj($entity);
 
 		$resp = array('result' => $result, 'respMsg' => 'Y');
 		return $resp;

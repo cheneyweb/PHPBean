@@ -9,7 +9,7 @@ import ( '__example', 'add_ExampleView' );
 /**
  * 新增页面
  *
- * @author 宇帅
+ * @author CheneyXu
  *
  */
 class Add_ExampleView {

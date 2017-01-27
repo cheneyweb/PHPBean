@@ -10,7 +10,7 @@ import ( '__example', '_exampleView' );
 /**
  * 列表页面
  *
- * @author 宇帅
+ * @author CheneyXu
  *
  */
 class _ExampleView {

@@ -32,7 +32,7 @@ class RoleService extends BaseService{
 	 * @return unknown(查询不到时返回null)
 	 */
 	public function queryRoleArr($entity) {
-		$result = $this->roleDao->queryRoleArr ( $entity );
+		$result = $this->roleDao->queryArr ( $entity );
 
 		$resp = array('result' => $result, 'respMsg' => 'Y');
 		return $resp;
@@ -45,7 +45,7 @@ class RoleService extends BaseService{
 	 * @return unknown(查询不到时返回null)
 	 */
 	public function queryRole($entity) {
-		$result = $this->roleDao->queryRole ( $entity );
+		$result = $this->roleDao->queryObj ( $entity );
 
 		$resp = array('result' => $result, 'respMsg' => 'Y');
 		return $resp;

@@ -9,7 +9,7 @@ include_once BASEURL . 'background/module/sys_role/entity/Role.php';
 import ( 'sys_admin', 'adminView' );
 /**
  *
- * @author 宇帅
+ * @author CheneyXu
  *         账号管理界面
  */
 class AdminView {
