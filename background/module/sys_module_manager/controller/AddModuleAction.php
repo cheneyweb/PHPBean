@@ -57,7 +57,7 @@ class AddModuleAction {
 		// 将模版模块复制成新模块
 		$exampleModulePath = $path . $exampleModulePrefix . '_' . $exampleModuleName;	// 模板模块完整路径
 		$newMoudlePath = $path . $tablePrefix . '_' . $tableName;						// 新模块完整路径
-		recurse_copy ( $exampleModulePath, $newMoudlePath );
+		FileDir::recurseCopy ( $exampleModulePath, $newMoudlePath );
 		// 根据模块名称编辑模块文件
 		self::editModuleFile ( $newMoudlePath . '/config/spring.xml', $exampleModulePrefix, $exampleModuleName, $tablePrefix, $tableName);
 		self::editModuleFile ( $newMoudlePath . '/config/plugin.xml', $exampleModulePrefix, $exampleModuleName, $tablePrefix, $tableName );
@@ -103,8 +103,8 @@ class AddModuleAction {
 		// 删除模板文件夹
 		rmdir ( $exampleDir );
 		// 将HTML文件模块移动到foreground
-		recurse_copy ( $newModuleDir, $path . '../../foreground/module/' . $tablePrefix . '_' . $tableName );
-		recurse_delete ( $newModuleDir );
+		FileDir::recurseCopy ( $newModuleDir, $path . '../../foreground/module/' . $tablePrefix . '_' . $tableName );
+		FileDir::recurseDelete ( $newModuleDir );
 	}
 
 	/**

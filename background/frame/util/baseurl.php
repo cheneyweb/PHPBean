@@ -1,3 +1,4 @@
+/*暂未使用*/
 <?php
 	// $_SERVER ["DOCUMENT_ROOT"]
 	$PHP_SELF=$_SERVER['PHP_SELF'];

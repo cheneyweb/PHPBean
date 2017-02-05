@@ -1,7 +1,7 @@
 <?php
 include_once BASEURL . 'background/module/sys_module_manager/service/BaseService.php';
 include_once BASEURL . 'background/module/sys_module_manager/entity/Module.php';
-include_once BASEURL . 'background/frame/util/fileDir.php';
+include_once BASEURL . 'background/frame/util/FileDir.php';
 
 class ModuleManagerService extends BaseService{
 	public $pDOUtil;
@@ -46,8 +46,8 @@ class ModuleManagerService extends BaseService{
 				$entity->id = $id;
 				// 删除模块文件
 				$module = $this->pDOUtil->queryObj ( $entity );
-				recurse_delete ( $path . $module->code . '_' . $module->name . '/' );
-				recurse_delete ( $path . '../../foreground/module/' . $module->code . '_' . $module->name );
+				FileDir::recurseDelete ( $path . $module->code . '_' . $module->name . '/' );
+				FileDir::recurseDelete ( $path . '../../foreground/module/' . $module->code . '_' . $module->name );
 				// 删除模块记录
 				$this->pDOUtil->delete ( $entity );
 			}
