@@ -8,7 +8,7 @@ include_once BASEURL . 'background/module/sys_module_manager/entity/Module.php';
 import ( "sys_module_manager", "moduleManagerView" );
 /**
  *
- * @author 宇帅
+ * @author CheneyXu
  *         模块管理界面
  */
 class ModuleManagerView {

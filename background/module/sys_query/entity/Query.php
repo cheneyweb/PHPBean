@@ -1,6 +1,6 @@
 <?php
 /**
- * @author 宇帅
+ * @author CheneyXu
  * 分页查询基类
  */
 class Query {

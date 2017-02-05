@@ -1,7 +1,7 @@
 <?php
 /**
   * @descriptor:	Spring的Bean工厂类
-  * @author:		许宇帅
+  * @author:		CheneyXu
   * @date:			2014年8月4日
   */
 class BeanFactory {
@@ -20,11 +20,11 @@ class BeanFactory {
 		}
 		/* 获取application.xml解析后的对象 */
 		self::$app = new applicationXMLforObject ( $hostPath . $filePath );
-		
+
 		self::$hostPath = $hostPath;
 		self::$filePath = $filePath;
 	}
-	
+
 	/**
 	 * 获取想要的对象通过 指定 类的名字
 	 * 想要从application.xml文件描述的类中获得想要的对象
@@ -34,7 +34,7 @@ class BeanFactory {
 	public static function getNewBeanByName($className) {
 		// 将类名首字母小写
 		$className = lcfirst ( $className );
-		
+
 		// 增加过滤开始,仅加载需要的类文件
 		foreach ( self::$app->getBeanConfigList ( "bean" ) as $o ) {
 			if ($o->getId () == $className) {
@@ -64,7 +64,7 @@ class BeanFactory {
 	}
 	/**
 	 * 创建对象 指定id 所对应的类的对象
-	 * 
+	 *
 	 * @param $refle $refle
 	 *        	= new ReflectionClass ($className);
 	 * @return BeanObj / false;
@@ -149,8 +149,8 @@ class applicationXMLforObject {
 	private static $beanArr = null;
 	/**
 	 * 构造函数
-	 * 
-	 * @param $filePath 指定XML配置文件路径        	
+	 *
+	 * @param $filePath 指定XML配置文件路径
 	 */
 	function __construct($filePath) {
 		if (file_exists ( $filePath )) {
@@ -167,7 +167,7 @@ class applicationXMLforObject {
 	}
 	/**
 	 * 通过配置文件中标签bean的属性id获得一个对应的实体bean
-	 * 
+	 *
 	 * @return the $beanId
 	 */
 	public function getBeanById($beanId) {
@@ -179,8 +179,8 @@ class applicationXMLforObject {
 	}
 	/**
 	 * 获得所有bean标签的实体对象
-	 * 
-	 * @param unknown_type $tag        	
+	 *
+	 * @param unknown_type $tag
 	 */
 	public function getBeanConfigList($tag) {
 		// 获取所有的$tag标签

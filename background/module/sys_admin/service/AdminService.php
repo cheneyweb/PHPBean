@@ -2,7 +2,7 @@
 include_once BASEURL . 'background/module/sys_module_manager/service/BaseService.php';
 include_once BASEURL . 'background/module/sys_admin/entity/AdminRole.php';
 /**
- * @author 宇帅
+ * @author CheneyXu
  * 用户业务服务层
  */
 class AdminService extends BaseService{

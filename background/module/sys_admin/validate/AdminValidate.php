@@ -1,7 +1,7 @@
 <?php
 /**
  * 校验封装
- * @author 宇帅
+ * @author CheneyXu
  *
  */
 class AdminValidate {

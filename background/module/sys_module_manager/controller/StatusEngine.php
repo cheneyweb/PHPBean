@@ -5,7 +5,7 @@ include_once BASEURL . 'background/frame/dao/pdo/PDOUtil.php';
 /**
  * 状态引擎
  *
- * @author 宇帅
+ * @author CheneyXu
  *
  */
 class StatusEngine {

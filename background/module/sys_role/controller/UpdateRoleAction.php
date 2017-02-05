@@ -9,7 +9,7 @@ import ( 'sys_role', 'updateRoleAction' );
 /**
  * 更新Action
  *
- * @author 宇帅
+ * @author CheneyXu
  *
  */
 class UpdateRoleAction {

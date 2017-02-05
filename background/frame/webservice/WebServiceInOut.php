@@ -1,6 +1,6 @@
 <?php
 /**
- * @author 宇帅
+ * @author CheneyXu
  * 将表转化为实体
  */
 class WebServiceInOut {
@@ -11,7 +11,7 @@ class WebServiceInOut {
 	private $isSign = true;
 	private $isCompress = false;
 	private $isEncrypt = true;
-	
+
 	/**
 	 * 获取入参对象
 	 */
@@ -26,7 +26,7 @@ class WebServiceInOut {
 		// 请求入参数据
 		$jsonReq = file_get_contents ( 'php://input' );
 // 		Log::info ( '原始入参:' . $jsonReq );
-		
+
 		// 解析json,获取json请求和签名
 		$jsonReq = json_decode ( $jsonReq );
 		$sign = $jsonReq->sign;
@@ -36,40 +36,40 @@ class WebServiceInOut {
 // 		Log::info ( '请求入参:' . $jsonData );
 // 		Log::info ( '旧签名:' . $sign );
 // 		Log::info ( '新签名:' . $newSign );
-		
+
 		// 判断签名是否一致
 		if ($this->isSign && $sign != $newSign) {
 			return '非法请求调用';
 		}
-		
+
 		// 如果需要特殊解密，则进行特殊解密
 		if ($this->isEncrypt) {
 			$jsonData = strrev ( $jsonData );
 // 			Log::info ( '特殊解密:' . $jsonData );
 		}
-		
+
 		// 如果入参是base64加密，则进行解码
 		if ($this->isInBase64) {
 			// base64解密
 			$jsonData = base64_decode ( $jsonData );
 // 			Log::info ( 'BASE64解密:' . $jsonData );
 		}
-		
+
 		// 如果入参压缩，则解压入参数据
 		if ($this->isCompress) {
 			$jsonData = gzuncompress ( $jsonData );
 // 			Log::info ( 'gzip解压:' . $jsonData );
 		}
-		
+
 		// 解析json
 		$obj = json_decode ( $jsonData );
 		return $obj;
 	}
-	
+
 	/**
 	 * 获取出参对象
 	 *
-	 * @param 出参对象 $obj        	
+	 * @param 出参对象 $obj
 	 */
 	function getOutObj($obj) {
 		// json编码

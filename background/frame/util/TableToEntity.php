@@ -1,6 +1,6 @@
 <?php
 /**
- * @author 宇帅
+ * @author CheneyXu
  * 将表转化为实体
  */
 class TableToEntity {
@@ -8,7 +8,7 @@ class TableToEntity {
 	/**
 	 * 获取表所有字段名
 	 *
-	 * @param unknown $tableName        	
+	 * @param unknown $tableName
 	 */
 	function getFieldNames($tableName) {
 		$dbh = $this->pDOUtil->getConnection ();
@@ -19,11 +19,11 @@ class TableToEntity {
 		}
 		return $columns;
 	}
-	
+
 	/**
 	 * 获取表所有字段信息
 	 *
-	 * @param unknown $tableName        	
+	 * @param unknown $tableName
 	 */
 	function getColumnsInfo($tableName) {
 		$dbh = $this->pDOUtil->getConnection ();
@@ -32,4 +32,4 @@ class TableToEntity {
 		return $result->fetchAll ();
 	}
 }
-?> 
+?>

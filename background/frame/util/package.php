@@ -1,8 +1,8 @@
 <?php
 /**
  * 导入Action并执行
- * @param unknown $moduleName
- * @param unknown $actionName
+ * @param 模块全称 $moduleName
+ * @param 控制器实例名称 $actionName
  */
 function import($moduleName, $actionName) {
 	// 是否自动开启session
@@ -28,10 +28,23 @@ function import($moduleName, $actionName) {
 }
 
 /**
+ * 判断变量是否为空
+ *
+ * @param 变量 $var
+ * @return boolean
+ */
+function isEmpty($var) {
+	if ($var === null || $var === '') {
+		return true;
+	}
+	return false;
+}
+
+/**
  * 将驼峰命名转化为下划线命名
  *
- * @param unknown $name
- * @return string
+ * @param 驼峰法命名字符串 $name
+ * @return 下划线间隔字符串
  */
 function formatPHPStyle($name) {
 	$temp_array = array ();
@@ -53,8 +66,9 @@ function formatPHPStyle($name) {
 /**
  * 格式化字符串为Java驼峰命名法
  *
- * @param unknown $str
- * @return string
+ * @param 下划线间隔字符串 $str
+ * @param 是否首字母大写
+ * @return 驼峰法命名字符串
  */
 function formatJavaStyle($str, $isUcfirst) {
 	$str = explode ( '_', $str );
@@ -67,25 +81,6 @@ function formatJavaStyle($str, $isUcfirst) {
 		$str [0] = lcfirst ( $str [0] );
 	}
 	return implode ( '', $str );
-}
-
-/**
- * 转换数组成JavaBean风格对象
- *
- * @param  $arr
- * @return obj
- */
-function arrToObj($arr) {
-  if (is_array($arr)) {
-  	$obj = new StdClass();
-  	foreach ($arr as $key => $val){
-  		$newKey = formatJavaStyle($key,false);
-  		$obj->$newKey = $val;
-  	}
-  }else {
-  	$obj = $arr;
-  }
-  return $obj;
 }
 
 /**
@@ -108,23 +103,55 @@ function parseToEntity($obj) {
 }
 
 /**
- * 判断变量是否为空
+ * 转换数组成JavaBean风格对象
  *
- * @param unknown $var
- * @return boolean
+ * @param  $arr
+ * @return obj
  */
-function isEmpty($var) {
-	if ($var === null || $var === '') {
-		return true;
+function arrToObj($arr) {
+  if (is_array($arr)) {
+  	$obj = new StdClass();
+  	foreach ($arr as $key => $val){
+  		$newKey = formatJavaStyle($key,false);
+  		$obj->$newKey = $val;
+  	}
+  }else {
+  	$obj = $arr;
+  }
+  return $obj;
+}
+
+/**
+ * 日志操作类
+ *
+ * @author CheneyXu
+ *
+ */
+class Log {
+	const INFO = '【INFO】';
+	const ERRO = '【ERRO】';
+	public static function info($msg) {
+		$filename = date ( 'y_m_d', time () ) . '_info.txt';
+		$logContent = date ( 'y-m-d h:i:s', time () );
+		$logContent .= Log::INFO;
+		$logContent .= $msg;
+		file_put_contents ( $_SERVER ['DOCUMENT_ROOT'] . '/log/' . $filename, $logContent . PHP_EOL, FILE_APPEND );
 	}
-	return false;
+	public static function error($msg) {
+		$filename = date ( 'y_m_d', time () ) . '_error.txt';
+		;
+		$logContent = date ( 'y-m-d h:i:s', time () );
+		$logContent .= Log::ERRO;
+		$logContent .= $msg;
+		file_put_contents ( $_SERVER ['DOCUMENT_ROOT'] . '/log/' . $filename, $logContent . PHP_EOL, FILE_APPEND );
+	}
 }
 
 /**
  * 获取以时间为基础生成的编码(前缀+时间+流水号)
  *
- * @param unknown $prefix
- * @return string
+ * @param 前缀名称 $prefix
+ * @return 编码
  */
 function getTimeCode($prefix) {
 	// 保存流水号的文件名，只要将这个文件删去流水号就重新开始
@@ -149,31 +176,5 @@ function getTimeCode($prefix) {
 		$serialNum = sprintf ( "%03d", ++ $serialNum );
 	}
 	return $prefix . date ( 'ymd', time () ) . $serialNum;
-}
-
-/**
- * 日志操作类
- *
- * @author 宇帅
- *
- */
-class Log {
-	const INFO = '【INFO】';
-	const ERRO = '【ERRO】';
-	public static function info($msg) {
-		$filename = date ( 'y_m_d', time () ) . '_info.txt';
-		$logContent = date ( 'y-m-d h:i:s', time () );
-		$logContent .= Log::INFO;
-		$logContent .= $msg;
-		file_put_contents ( $_SERVER ['DOCUMENT_ROOT'] . '/log/' . $filename, $logContent . PHP_EOL, FILE_APPEND );
-	}
-	public static function error($msg) {
-		$filename = date ( 'y_m_d', time () ) . '_error.txt';
-		;
-		$logContent = date ( 'y-m-d h:i:s', time () );
-		$logContent .= Log::ERRO;
-		$logContent .= $msg;
-		file_put_contents ( $_SERVER ['DOCUMENT_ROOT'] . '/log/' . $filename, $logContent . PHP_EOL, FILE_APPEND );
-	}
 }
 ?>

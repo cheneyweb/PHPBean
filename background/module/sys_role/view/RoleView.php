@@ -10,7 +10,7 @@ import ( 'sys_role', 'roleView' );
 /**
  * 列表页面
  *
- * @author 宇帅
+ * @author CheneyXu
  *
  */
 class RoleView {

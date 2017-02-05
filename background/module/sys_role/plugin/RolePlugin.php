@@ -1,7 +1,7 @@
 <?php
 /**
  * 插件
- * @author 宇帅
+ * @author CheneyXu
  *
  */
 class RolePlugin {

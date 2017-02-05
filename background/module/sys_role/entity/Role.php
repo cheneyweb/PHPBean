@@ -2,13 +2,13 @@
 include_once BASEURL . 'background/module/sys_query/entity/Query.php';
 /**
  * 实体对象(实体bean属性需要全部为public)
- * @author 宇帅
+ * @author CheneyXu
  *
  */
 class Role extends Query{
 	private static $tablePrefix='sys';// 实体表前缀
 	public static function getTablePrefix(){return self::$tablePrefix;}
-	
+
 	public $id;
 	public $code;
 	public $name;

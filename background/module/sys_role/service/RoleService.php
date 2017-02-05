@@ -5,7 +5,7 @@ include_once BASEURL . 'background/module/sys_role/entity/RolePermission.php';
 /**
  * Service业务封装
  *
- * @author 宇帅
+ * @author CheneyXu
  *
  */
 class RoleService extends BaseService{

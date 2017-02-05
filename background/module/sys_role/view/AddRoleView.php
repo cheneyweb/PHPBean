@@ -9,7 +9,7 @@ import ( 'sys_role', 'addRoleView' );
 /**
  * 新增页面
  *
- * @author 宇帅
+ * @author Cheney
  *
  */
 class AddRoleView {

@@ -10,7 +10,7 @@ import ( 'sys_role', 'updateRoleView' );
 /**
  * 更新页面
  *
- * @author 宇帅
+ * @author CheneyXu
  *
  */
 class UpdateRoleView {

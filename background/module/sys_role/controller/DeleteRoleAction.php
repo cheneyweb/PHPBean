@@ -9,7 +9,7 @@ import ( 'sys_role', 'deleteRoleAction' );
 /**
  * 删除Action
  *
- * @author 宇帅
+ * @author CheneyXu
  *
  */
 class DeleteRoleAction {
