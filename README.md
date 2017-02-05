@@ -201,12 +201,10 @@ Action层API
         	js——定制js
         		query
         			show.js(页面行为)
-        			vue_query_page.js(封装ztree的vue组件)
         		runtime_validator
         			runtime_validator.js(实时动态校验)
         		tree
         			tree_permission.js(权限树)
-        			vue_ztree.js(封装ztree的vue树组件)
         		vue
         			vue_base.js(组件基类)
         			vue_modal.js(弹窗组件)
@@ -225,6 +223,7 @@ Action层API
         	sys_admin——系统用户模块
 			sys_module_manager——模块管理
 			sys_role——系统角色模块
+			sys_tutorial——系统帮助文档
 	log——系统LOG
     shell——SQL备份
     	jshint.conf(JS校验配置)
